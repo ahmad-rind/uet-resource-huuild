@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   LogOut, Clock, CheckCircle, XCircle, Flag, Trash2,
-  ExternalLink, RefreshCw, Search, BarChart3,
-  Check, X, AlertTriangle, User, Calendar, BookOpen,
+  RefreshCw, Search, BarChart3,
+  Check, X, AlertTriangle, User, BookOpen,
   Bell, ArrowUpRight, Layers, Copy, Pencil,
   FolderTree, ChevronDown, Home, Menu, PartyPopper, Inbox, ShieldCheck
 } from 'lucide-react';
@@ -18,6 +19,7 @@ import {
 } from '../../lib/supabase.js';
 import SubmissionsManager from './SubmissionsManager';
 import ModeratorsManager from './ModeratorsManager';
+import CategoryManager from './CategoryManager';
 import { Reveal } from '../../components/Reveal.js';
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -39,7 +41,7 @@ const S = {
 };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type TabType   = 'pending' | 'approved' | 'rejected' | 'flagged' | 'all' | 'submissions' | 'moderators';
+type TabType   = 'pending' | 'approved' | 'rejected' | 'flagged' | 'all' | 'submissions' | 'moderators' | 'categories';
 type SortField = 'date' | 'title' | 'reports';
 type SortDir   = 'asc' | 'desc';
 
@@ -98,21 +100,7 @@ function Toast({ message, type }: { message: string; type: 'success' | 'error' |
   );
 }
 
-// ── Status Badge ──────────────────────────────────────────────────────────────
-function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { color: string; icon: React.ReactNode }> = {
-    pending:  { color: '#F59E0B', icon: <Clock className="w-3 h-3" /> },
-    approved: { color: '#10B981', icon: <CheckCircle className="w-3 h-3" /> },
-    rejected: { color: '#EF4444', icon: <XCircle className="w-3 h-3" /> },
-  };
-  const s = map[status] ?? map.pending;
-  return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
-      style={{ background: S.bg, boxShadow: S.smallInset, color: s.color, fontFamily: "'DM Sans',sans-serif" }}>
-      {s.icon} {status.charAt(0).toUpperCase() + status.slice(1)}
-    </span>
-  );
-}
+
 
 // ── Preview Modal ─────────────────────────────────────────────────────────────
 function PreviewModal({ resource, onClose, onApprove, onReject, onDismissFlags, processing }: {
@@ -134,112 +122,155 @@ function PreviewModal({ resource, onClose, onApprove, onReject, onDismissFlags, 
     return () => window.removeEventListener('keydown', h);
   }, [onClose]);
 
+  const isApproved = resource.status === 'approved';
+
   return (
     <div ref={ref} onClick={e => { if (e.target === ref.current) onClose(); }}
       className="fixed inset-0 z-[150] flex items-center justify-center p-4"
-      style={{ background: 'rgba(26,29,46,0.4)', backdropFilter: 'blur(8px)' }}>
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[32px] p-8"
-        style={{ background: S.bg, boxShadow: S.extruded }}>
-
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-6">
-          <div className="flex flex-wrap gap-2">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${colors.bg} ${colors.text}`}>{resource.type}</span>
-            <StatusBadge status={resource.status} />
-            {resource.reportCount >= 1 && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-orange-500"
-                style={{ background: S.bg, boxShadow: S.smallInset }}>
-                <Flag className="w-3 h-3" /> {resource.reportCount} flags
-              </span>
-            )}
+    >
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="absolute inset-0"
+        style={{ background: 'rgba(26,29,46,0.3)', backdropFilter: 'blur(12px)' }}
+      />
+      
+      <motion.div 
+        initial={{ scale: 0.95, opacity: 0, y: 15 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 10 }}
+        transition={{ type: 'spring', damping: 35, stiffness: 400 }}
+        className="w-full max-w-md rounded-[32px] overflow-hidden flex flex-col max-h-[90vh] relative z-10" 
+        style={{ background: S.bg, boxShadow: S.extruded }}
+      >
+        
+        {/* Header Section */}
+        <div className="p-7 pb-5 shrink-0">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex items-center gap-4">
+              <div 
+                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-[#d6dae8]"
+                style={{ boxShadow: 'inset 4px 4px 8px #b0b8cc, inset -4px -4px 8px #ffffff' }}
+              >
+                <FileIcon className="w-6 h-6 text-[#5B4FE9]" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-lg font-extrabold text-[#1a1d2e] tracking-tight leading-tight mb-0.5"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {resource.title}
+                </h3>
+                <p className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  {resource.courseCode} · {resource.courseName}
+                </p>
+              </div>
+            </div>
+            
+            <button onClick={onClose}
+              className="w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+              style={{ boxShadow: S.small, color: S.muted, background: S.bg }}>
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <button onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
-            style={{ boxShadow: S.small, color: S.muted }}>
-            <X className="w-4 h-4" />
-          </button>
+
+          <div className="flex flex-wrap gap-2">
+            <span className={`px-2.5 py-1 rounded-lg text-[9px] font-extrabold uppercase tracking-widest ${colors.bg} ${colors.text}`}>
+              {resource.type}
+            </span>
+            <div className="px-2.5 py-1 rounded-lg text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1.5"
+              style={{ background: S.bg, boxShadow: S.smallInset, color: isApproved ? '#10B981' : resource.status === 'rejected' ? '#EF4444' : '#F59E0B' }}>
+              {isApproved ? <CheckCircle className="w-3 h-3" /> : resource.status === 'rejected' ? <XCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+              {resource.status}
+            </div>
+          </div>
         </div>
 
-        <h2 className="text-xl font-extrabold mb-1 tracking-tight" style={{ color: S.fg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
-          {resource.title}
-        </h2>
-        <p className="text-sm mb-6" style={{ color: S.muted }}>{resource.courseCode} · {resource.courseName}</p>
-
-        {/* Meta grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 rounded-2xl p-5 mb-6"
-          style={{ boxShadow: S.inset, background: S.bg }}>
+        {/* Metadata Multi-col Stripe */}
+        <div className="bg-[#ced4e0] border-y border-[#b0b8cc]/50 grid grid-cols-4 px-2 shrink-0 shadow-[inset_0_4px_12px_rgba(0,0,0,0.03)]">
           {[
-            { label: 'Department', value: resource.department, icon: <BookOpen className="w-3 h-3" /> },
-            { label: 'Semester',   value: `Semester ${resource.semester}`, icon: <Layers className="w-3 h-3" /> },
-            { label: 'Contributor',value: resource.uploadedBy || 'Anonymous', icon: <User className="w-3 h-3" /> },
-            { label: 'Submitted',  value: fmtRelative(resource.uploadedAt), icon: <Calendar className="w-3 h-3" /> },
-          ].map(m => (
-            <div key={m.label}>
-              <p className="text-xs flex items-center gap-1 mb-1 font-semibold uppercase tracking-wide" style={{ color: S.muted }}>{m.icon}{m.label}</p>
-              <p className="text-sm font-bold break-words" style={{ color: S.fg }}>{m.value}</p>
+            { label: 'DEPT', value: resource.department.split(' ')[0] },
+            { label: 'SEM',  value: `Sem ${resource.semester}` },
+            { label: 'BY',   value: (resource.uploadedBy || 'Anon').split(' ')[0] },
+            { label: 'TIME', value: fmtRelative(resource.uploadedAt) },
+          ].map((item, idx) => (
+            <div key={idx} className={`py-4 px-3 text-center ${idx < 3 ? 'border-r border-[#b0b8cc]/40' : ''}`}>
+              <p className="text-[8px] font-extrabold text-[#5B4FE9] uppercase tracking-[0.1em] mb-1">{item.label}</p>
+              <p className="text-[11px] font-extrabold text-[#1a1d2e] truncate">{item.value}</p>
             </div>
           ))}
         </div>
 
-        {resource.description && (
-          <div className="mb-5">
-            <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: S.muted }}>Description</p>
-            <p className="text-sm leading-relaxed rounded-2xl px-4 py-3" style={{ color: S.fg, boxShadow: S.inset, background: S.bg }}>{resource.description}</p>
+        {/* Body Content (Scrollable if needed) */}
+        <div className="p-7 space-y-6 overflow-y-auto no-scrollbar">
+          {/* External Link */}
+          <div>
+            <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#64748B]/70 mb-2 flex items-center gap-1.5">
+              <ArrowUpRight className="w-2.5 h-2.5" /> External Link
+            </label>
+            <div className="flex items-center p-1.5 rounded-xl bg-[#d6dae8]" 
+              style={{ boxShadow: S.insetDeep }}>
+              <div className="flex-1 px-3 py-1.5 text-[11px] font-medium text-[#1a1d2e] truncate font-mono opacity-80">
+                {resource.link}
+              </div>
+              <a href={resource.link} target="_blank" rel="noopener noreferrer"
+                className="px-4 py-1.5 rounded-lg text-[11px] font-extrabold text-[#5B4FE9] transition-all duration-300 hover:bg-white/20 active:scale-95 flex items-center gap-1.5 shrink-0"
+              >
+                Open <ArrowUpRight className="w-3 h-3" />
+              </a>
+            </div>
           </div>
-        )}
 
-        {/* Link */}
-        <div className="mb-5">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: S.muted }}>External Link</p>
-          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ boxShadow: S.inset, background: S.bg }}>
-            <span className="text-xs break-all flex-1 font-mono" style={{ color: S.fg }}>{resource.link}</span>
-            <a href={resource.link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-bold transition-colors shrink-0 hover:underline"
-              style={{ color: S.accent }}>
-              Open <ArrowUpRight className="w-3 h-3" />
-            </a>
+          {/* Admin Note */}
+          <div>
+            <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#64748B]/70 mb-2 flex items-center gap-1.5">
+               Admin Note <span className="normal-case opacity-50 ml-1 font-bold">(optional)</span>
+            </label>
+            <textarea 
+              value={note} 
+              onChange={e => setNote(e.target.value)}
+              placeholder="Add a review note..." 
+              rows={3}
+              className="w-full px-4 py-3 rounded-2xl text-[12px] outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/20 resize-none leading-relaxed"
+              style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }}
+            />
           </div>
-        </div>
 
-        {/* Admin note */}
-        <div className="mb-7">
-          <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: S.muted }}>
-            Admin Note <span className="normal-case font-normal opacity-60">(optional)</span>
-          </label>
-          <textarea value={note} onChange={e => setNote(e.target.value)}
-            placeholder="Add a review note..." rows={3}
-            className="w-full px-4 py-3 rounded-2xl text-sm outline-none resize-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9] focus:ring-offset-2"
-            style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg, fontFamily: "'DM Sans',sans-serif" }} />
-        </div>
+          {/* Footer Actions */}
+          <div className="flex gap-2.5 items-end pt-2">
+            {!isApproved ? (
+              <button 
+                onClick={() => { onApprove(resource.id, note); onClose(); }} 
+                disabled={isProc}
+                className="flex-1 py-3.5 rounded-2xl bg-[#10B981] text-white text-[12px] font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-[0_10px_25px_rgba(16,185,129,0.3)] transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+              >
+                {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <CheckCircle className="w-4 h-4" />}
+                Approve
+              </button>
+            ) : (
+              <button 
+                onClick={() => { onReject(resource.id, note); onClose(); }} 
+                disabled={isProc}
+                className="flex-1 py-3.5 rounded-2xl bg-[#EF4444] text-white text-[12px] font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-[0_10px_25px_rgba(239,68,68,0.3)] transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+              >
+                {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <XCircle className="w-4 h-4" />}
+                Reject
+              </button>
+            )}
+          </div>
 
-        {/* Actions */}
-        <div className="flex gap-3">
-          {resource.status !== 'approved' && (
-            <button onClick={() => { onApprove(resource.id, note); onClose(); }} disabled={isProc}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#10B981]"
-              style={{ background: 'linear-gradient(135deg,#10B981,#34D399)', boxShadow: S.small }}>
-              {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-4 h-4" />}
-              Approve
+          {/* Flag Dismiss Link/Button */}
+          {resource.reportCount > 0 && (
+            <button 
+              onClick={() => { onDismissFlags(resource.id); onClose(); }} 
+              disabled={isProc}
+              className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-[10px] font-extrabold text-orange-600 uppercase tracking-widest transition-all duration-300 hover:bg-orange-50/50 disabled:opacity-60"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" /> Clear Flags
             </button>
           )}
-          {resource.status !== 'rejected' && (
-            <button onClick={() => { onReject(resource.id, note); onClose(); }} disabled={isProc}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#EF4444]"
-              style={{ background: 'linear-gradient(135deg,#EF4444,#F87171)', boxShadow: S.small }}>
-              {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <X className="w-4 h-4" />}
-              Reject
-            </button>
-          )}
         </div>
-        
-        {resource.reportCount > 0 && (
-          <button onClick={() => { onDismissFlags(resource.id); onClose(); }} disabled={isProc}
-            className="w-full mt-3 flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#F97316]"
-            style={{ background: 'linear-gradient(135deg,#F97316,#FB923C)', boxShadow: S.small }}>
-            <ShieldCheck className="w-4 h-4" /> Keep & Clear Flags
-          </button>
-        )}
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -283,101 +314,152 @@ function EditResourceModal({ resource, onClose, onSave }: {
     }
   };
 
-  const editableField = (label: string, name: keyof typeof form, type: string = 'text', extra?: React.ReactNode) => (
-    <div>
-      <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: S.muted }}>{label}</label>
-      {extra || (
-        <input
-          type={type}
-          value={form[name]}
-          onChange={e => setForm(f => ({ ...f, [name]: type === 'number' ? Number(e.target.value) : e.target.value }))}
-          className="w-full px-4 py-3 rounded-2xl text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]"
-          style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg, fontFamily: "'DM Sans',sans-serif" }}
-          {...(type === 'number' ? { min: 1, max: 8 } : {})}
-        />
-      )}
-    </div>
-  );
-
-  const readOnlyField = (label: string, value: string | number) => (
-    <div>
-      <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: S.muted }}>{label}</label>
-      <div className="w-full px-4 py-3 rounded-2xl text-sm"
-        style={{ background: S.bg, boxShadow: S.inset, color: S.muted, fontFamily: "'DM Sans',sans-serif" }}>
-        {value}
-      </div>
-    </div>
-  );
-
   return (
     <div ref={ref} onClick={e => { if (e.target === ref.current) onClose(); }}
       className="fixed inset-0 z-[150] flex items-center justify-center p-4"
-      style={{ background: 'rgba(26,29,46,0.4)', backdropFilter: 'blur(8px)' }}>
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[32px] p-8"
-        style={{ background: S.bg, boxShadow: S.extruded }}>
+    >
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="absolute inset-0"
+        style={{ background: 'rgba(26,29,46,0.3)', backdropFilter: 'blur(12px)' }}
+      />
 
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-extrabold tracking-tight" style={{ color: S.fg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Edit Resource</h2>
-          <button onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
-            style={{ boxShadow: S.small, color: S.muted }}>
-            <X className="w-4 h-4" />
-          </button>
+      <motion.div 
+        initial={{ scale: 0.95, opacity: 0, y: 15 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 10 }}
+        transition={{ type: 'spring', damping: 35, stiffness: 400 }}
+        className="w-full max-w-md rounded-[32px] overflow-hidden flex flex-col max-h-[90vh] relative z-10" 
+        style={{ background: S.bg, boxShadow: S.extruded }}
+      >
+        
+        {/* Header Section */}
+        <div className="p-6 pb-4 shrink-0">
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <div className="flex items-center gap-4">
+              <div 
+                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-[#d6dae8]"
+                style={{ boxShadow: 'inset 4px 4px 8px #b0b8cc, inset -4px -4px 8px #ffffff' }}
+              >
+                <Pencil className="w-6 h-6 text-[#5B4FE9]" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-lg font-extrabold text-[#1a1d2e] tracking-tight leading-tight mb-0.5"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  Edit Resource
+                </h3>
+                <p className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                  Updating details for "{resource.title}"
+                </p>
+              </div>
+            </div>
+            
+            <button onClick={onClose}
+              className="w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+              style={{ boxShadow: S.small, color: S.muted, background: S.bg }}>
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {editableField('Title', 'title')}
+        {/* Info Stripe (Read Only) */}
+        <div className="bg-[#ced4e0] border-y border-[#b0b8cc]/50 grid grid-cols-4 px-2 shrink-0 shadow-[inset_0_4px_12px_rgba(0,0,0,0.03)]">
+          {[
+            { label: 'DEPT', value: resource.department.split(' ')[0] },
+            { label: 'SEM',  value: `Sem ${resource.semester}` },
+            { label: 'CODE', value: resource.courseCode },
+            { label: 'TYPE', value: resource.type },
+          ].map((item, idx) => (
+            <div key={idx} className={`py-3 px-3 text-center ${idx < 3 ? 'border-r border-[#b0b8cc]/40' : ''}`}>
+              <p className="text-[8px] font-extrabold text-[#5B4FE9] uppercase tracking-[0.1em] mb-1">{item.label}</p>
+              <p className="text-[11px] font-extrabold text-[#1a1d2e] truncate">{item.value}</p>
+            </div>
+          ))}
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {editableField('Type', 'type', 'text', (
-              <select
-                value={form.type}
-                onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-                className="w-full px-4 py-3 rounded-2xl text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]"
-                style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg, fontFamily: "'DM Sans',sans-serif" }}>
-                {(resourceTypes as string[]).map((t: string) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            ))}
-            {readOnlyField('Department', form.department)}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {readOnlyField('Semester', form.semester)}
-            {readOnlyField('Course Code', form.courseCode)}
-          </div>
-
-          {readOnlyField('Course Name', form.courseName)}
-          {editableField('Link', 'link')}
-
+        {/* Scrollable Form Body */}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-4">
+          {/* Title */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: S.muted }}>Description</label>
-            <textarea
-              value={form.description}
-              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-              rows={3}
-              className="w-full px-4 py-3 rounded-2xl text-sm outline-none resize-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]"
-              style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg, fontFamily: "'DM Sans',sans-serif" }}
+            <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#5B4FE9] mb-1.5">Title</label>
+            <input 
+              type="text"
+              value={form.title} 
+              onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+              placeholder="Resource title..." 
+              required
+              className="w-full px-4 py-2.5 rounded-2xl text-[12px] font-medium outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/20"
+              style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }}
             />
           </div>
 
+          {/* Type Selection */}
+          <div>
+            <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#5B4FE9] mb-1.5">Resource Type</label>
+            <div className="relative group">
+              <select 
+                value={form.type} 
+                onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
+                className="w-full px-4 py-2.5 rounded-2xl text-[12px] font-medium appearance-none outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/20 cursor-pointer"
+                style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }}
+              >
+                {(resourceTypes as string[]).map(t => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B] pointer-events-none transition-transform group-focus-within:rotate-180" />
+            </div>
+          </div>
+
+          {/* Link */}
+          <div>
+            <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#5B4FE9] mb-1.5 flex items-center gap-1.5">
+              <ArrowUpRight className="w-2.5 h-2.5" /> External Link
+            </label>
+            <input 
+              type="url"
+              value={form.link} 
+              onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
+              placeholder="https://..." 
+              required
+              className="w-full px-4 py-2.5 rounded-2xl text-[12px] font-mono outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/20"
+              style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }}
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+             <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#5B4FE9] mb-1.5">Description</label>
+             <textarea 
+               value={form.description} 
+               onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+               placeholder="Add a description..." 
+               rows={3}
+               className="w-full px-4 py-2.5 rounded-2xl text-[12px] outline-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/20 resize-none leading-relaxed"
+               style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }}
+             />
+          </div>
+
           {error && (
-            <div className="px-4 py-3 rounded-2xl text-sm text-red-500 font-medium"
-              style={{ boxShadow: 'inset 4px 4px 8px #b0b8cc, inset -4px -4px 8px #ffffff', background: S.bg }}>
-              {error}
+            <div className="p-4 rounded-2xl bg-red-50 text-red-600 text-[11px] font-bold border border-red-100 flex items-center gap-2">
+              <AlertTriangle className="w-3.5 h-3.5" /> {error}
             </div>
           )}
 
-          <button type="submit" disabled={saving}
-            className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-sm text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9] focus:ring-offset-2"
-            style={{ background: S.accent, boxShadow: S.extruded, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
-            {saving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-4 h-4" />}
-            Save Changes
-          </button>
+          {/* Footer Save Button */}
+          <div className="pt-2">
+            <button type="submit" disabled={saving}
+              className="w-full py-4 rounded-2xl bg-[#5B4FE9] text-white text-[12px] font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-[0_10px_25px_rgba(91,79,233,0.3)] transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+            >
+              {saving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-4 h-4" />}
+              Save Changes
+            </button>
+          </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -421,137 +503,184 @@ function ResourceCard({ resource, onApprove, onReject, onPreview, onDelete, onDi
   const isProc      = processing    === resource.id;
   const needsConfirm= deleteConfirm === resource.id;
 
-  const copyLink = () => {
+  const copyLink = (e: React.MouseEvent) => {
+    e.stopPropagation();
     try { navigator.clipboard.writeText(resource.link); setCopied(true); setTimeout(() => setCopied(false), 2000); }
     catch { /* noop */ }
   };
 
-  const statusColors = {
-    approved: { bg: 'rgba(16, 185, 129, 0.15)', text: '#10B981' },
-    rejected: { bg: 'rgba(239, 68, 68, 0.15)', text: '#EF4444' },
-    pending:  { bg: 'rgba(245, 158, 11, 0.15)', text: '#F59E0B' }
-  }[resource.status] || { bg: 'rgba(91, 79, 233, 0.15)', text: '#5B4FE9' };
+  const statusMap = {
+    approved: { bg: 'rgba(16, 185, 129, 0.12)', text: '#10B981', label: 'Approved', icon: <CheckCircle className="w-3 h-3" /> },
+    rejected: { bg: 'rgba(239, 68, 68, 0.12)', text: '#EF4444', label: 'Rejected', icon: <XCircle className="w-3 h-3" /> },
+    pending:  { bg: 'rgba(245, 158, 11, 0.12)', text: '#F59E0B', label: 'Pending', icon: <Clock className="w-3 h-3" /> }
+  };
+  const status = statusMap[resource.status as keyof typeof statusMap] || statusMap.pending;
 
   return (
-    <div className="rounded-[32px] p-5 transition-all duration-300 hover:-translate-y-1.5 group bg-[#d6dae8] flex flex-col h-full relative"
+    <div className="rounded-[24px] p-4.5 transition-all duration-300 hover:-translate-y-1 group bg-[#d6dae8] relative flex flex-col h-full"
       style={{ boxShadow: S.extruded }}>
-
-      {/* Top Header Section: Icon + Title/Meta */}
-      <div className="flex gap-4 mb-4">
-        {/* Icon Container - Neuomorphic Inset */}
-        <div 
-          className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-[#d6dae8]"
-          style={{ boxShadow: S.smallInset }}
+      
+      {/* Quick Actions (Top Right) */}
+      <div className="absolute top-4.5 right-4.5 flex items-center gap-1">
+        <button 
+          onClick={copyLink}
+          className="w-8.5 h-8.5 flex items-center justify-center rounded-lg transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          style={{ 
+            boxShadow: S.small, 
+            background: S.bg,
+            color: copied ? '#10B981' : S.muted 
+          }}
+          title="Copy Link"
         >
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#d6dae8] shadow-[2px_2px_5px_#b0b8cc,-2px_-2px_5px_#ffffff]">
-            <FileIcon className="w-6 h-6 text-[#5B4FE9] opacity-90" />
-          </div>
+          {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+        </button>
+        <button 
+          onClick={() => onPreview(resource)}
+          className="w-8.5 h-8.5 flex items-center justify-center rounded-lg transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          style={{ boxShadow: S.small, background: S.bg, color: S.muted }}
+          title="Open Link"
+        >
+          <ArrowUpRight className="w-3 h-3" />
+        </button>
+      </div>
+
+      <div className="flex items-start gap-2.5 mb-2.5 max-w-[calc(100%-75px)]">
+        {/* Icon Badge */}
+        <div 
+          className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 bg-[#d6dae8]"
+          style={{ boxShadow: 'inset 4px 4px 8px #b0b8cc, inset -4px -4px 8px #ffffff' }}
+        >
+          <FileIcon className="w-5.5 h-5.5 text-[#5B4FE9]" />
         </div>
 
-        {/* Title and Metadata */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-2 mb-1">
-            <h3 className="font-extrabold text-[#1a1d2e] text-[15px] leading-tight tracking-tight line-clamp-1"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {resource.title}
-            </h3>
-            {/* Quick Actions */}
-            <div className="flex items-center gap-1.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button onClick={copyLink} className="p-1.5 rounded-lg hover:bg-white/20 transition-colors" style={{ color: copied ? '#10B981' : S.muted }}>
-                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-              </button>
-              <button onClick={() => onPreview(resource)} className="p-1.5 rounded-lg hover:bg-white/20 transition-colors" style={{ color: S.muted }}>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-bold text-[#64748B]/60 uppercase tracking-widest">
-            <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{resource.department.split(' ')[0]}</span>
+        {/* Title & Stats Meta */}
+        <div className="min-w-0">
+          <h3 className="text-sm font-extrabold text-[#1a1d2e] leading-tight tracking-tight mb-1 line-clamp-1"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {resource.title}
+          </h3>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[9px] font-bold text-[#64748B]/60 uppercase tracking-widest">
+            <span className="flex items-center gap-1"><BookOpen className="w-2.5 h-2.5" />{resource.department.split(' ')[0]}</span>
             <span className="opacity-30">•</span>
-            <span className="flex items-center gap-1"><Layers className="w-3 h-3" />Sem {resource.semester}</span>
+            <span className="flex items-center gap-1"><Layers className="w-2.5 h-2.5" />S{resource.semester}</span>
             <span className="opacity-30">•</span>
-            <span className="flex items-center gap-1"><User className="w-3 h-3" />{resource.uploadedBy || 'Anon'}</span>
+            <span className="flex items-center gap-1"><User className="w-2.5 h-2.5" />{(resource.uploadedBy || 'Anon').split(' ')[0]}</span>
           </div>
         </div>
       </div>
 
-      {/* Status Badge Group */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        <div className="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase flex items-center gap-1.5"
-          style={{ backgroundColor: statusColors.bg, color: statusColors.text }}>
-          {resource.status === 'approved' ? <CheckCircle className="w-3 h-3" /> : resource.status === 'rejected' ? <XCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-          {resource.status}
+      {/* Main Status & Flag Badges */}
+      <div className="flex flex-wrap gap-1.5 mb-3.5">
+        <div className="px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-widest uppercase flex items-center gap-1.5"
+          style={{ backgroundColor: status.bg, color: status.text }}>
+          {status.icon} {status.label}
         </div>
         {resource.reportCount > 0 && (
-          <div className="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase flex items-center gap-1.5 text-orange-600 bg-orange-50/50">
-            <Flag className="w-3 h-3" /> {resource.reportCount} Flags
+          <div className="px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-widest uppercase flex items-center gap-1.5 text-orange-600 bg-orange-50/50"
+            style={{ boxShadow: 'inset 0 0 0 1px rgba(234, 88, 12, 0.1)' }}>
+            <Flag className="w-2.5 h-2.5" /> {resource.reportCount}
           </div>
         )}
       </div>
 
-      {/* Divider */}
-      <div className="h-[1px] w-full bg-[#b0b8cc]/30 mb-5" />
+      <div className="h-[1px] w-full bg-[#1a1d2e]/5 mb-3.5" />
 
-      {/* Review Section Toggle */}
-      <div className="mb-5">
-        <button onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-2 text-[11px] font-extrabold text-[#5B4FE9] uppercase tracking-widest transition-opacity hover:opacity-80">
-          <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+      {/* Review Section */}
+      <div className="mb-4 flex-1">
+        <button 
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-1 text-[9px] font-extrabold text-[#5B4FE9] uppercase tracking-widest transition-opacity hover:opacity-80"
+        >
+          <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
           Review & note
         </button>
         {expanded && (
-          <div className="mt-4 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="mt-2.5 space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-300">
             {resource.description && (
-              <div className="p-4 rounded-[20px] text-[13px] leading-relaxed text-[#64748B]" style={{ background: S.bg, boxShadow: S.smallInset }}>
+              <div className="p-2.5 rounded-lg text-[11px] leading-relaxed text-[#64748B] font-medium" 
+                style={{ background: S.bg, boxShadow: 'inset 2px 2px 4px #b0b8cc, inset -2px -2px 4px #ffffff' }}>
                 {resource.description}
               </div>
             )}
-            <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="Add review note..." rows={2}
-              className="w-full px-4 py-3 rounded-2xl text-[13px] outline-none resize-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/30"
-              style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }} />
+            <textarea 
+              value={note} 
+              onChange={e => setNote(e.target.value)} 
+              placeholder="Add review note..." 
+              rows={1}
+              className="w-full px-2.5 py-1.5 rounded-lg text-[11px] outline-none resize-none transition-all duration-300 focus:ring-2 focus:ring-[#5B4FE9]/20"
+              style={{ background: S.bg, boxShadow: S.insetDeep, color: S.fg }} 
+            />
           </div>
         )}
       </div>
 
       {/* Footer Actions */}
-      <div className="mt-auto flex items-center gap-3">
-        {resource.status === 'pending' ? (
-          <div className="flex-1 flex gap-2">
-            <button onClick={() => onApprove(resource.id, note)} disabled={isProc}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#10B981] text-white text-[12px] font-extrabold transition-all duration-300 hover:scale-[1.02] shadow-[4px_4px_10px_rgba(16,185,129,0.3)] disabled:opacity-50">
-              {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-4 h-4" />}
+      <div className="mt-auto flex items-center justify-between gap-2">
+        {/* Primary Action (Approve/Reject) */}
+        <div className="flex-1">
+          {resource.status === 'pending' ? (
+            <button 
+              onClick={() => onApprove(resource.id, note)}
+              disabled={isProc}
+              className="w-full py-2 rounded-lg text-white text-[10px] font-extrabold uppercase tracking-widest flex items-center justify-center gap-1 transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+              style={{ 
+                background: 'linear-gradient(135deg, #10B981, #059669)',
+                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.15)' 
+              }}
+            >
+              {isProc ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <CheckCircle className="w-3 h-3" />}
               Approve
             </button>
-            <button onClick={() => onReject(resource.id, note)} disabled={isProc}
-              className="px-4 flex items-center justify-center rounded-2xl bg-[#EF4444] text-white transition-all duration-300 hover:scale-[1.02] shadow-[4px_4px_10px_rgba(239,68,68,0.3)]">
-              {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <X className="w-4 h-4" />}
+          ) : (
+            <button 
+              onClick={() => (resource.status === 'approved' ? onReject(resource.id, note) : onApprove(resource.id, note))}
+              disabled={isProc}
+              className="w-full py-2 rounded-lg text-white text-[10px] font-extrabold uppercase tracking-widest flex items-center justify-center gap-1 transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+              style={{ 
+                background: resource.status === 'approved' ? 'linear-gradient(135deg,#EF4444,#DC2626)' : 'linear-gradient(135deg, #10B981, #059669)',
+                boxShadow: resource.status === 'approved' ? '0 4px 12px rgba(239, 68, 68, 0.15)' : '0 4px 12px rgba(16, 185, 129, 0.15)'
+              }}
+            >
+              {isProc ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" /> : (resource.status === 'approved' ? <XCircle className="w-3 h-3" /> : <CheckCircle className="w-3 h-3" />)}
+              {resource.status === 'approved' ? 'Reject' : 'Approve'}
             </button>
-          </div>
-        ) : (
-          <button onClick={() => (resource.status === 'approved' ? onReject(resource.id, note) : onApprove(resource.id, note))} disabled={isProc}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-white text-[12px] font-extrabold transition-all duration-300 hover:scale-[1.02] shadow-[4px_4px_10px_rgba(0,0,0,0.1)] disabled:opacity-50 ${resource.status === 'approved' ? 'bg-[#EF4444]' : 'bg-[#10B981]'}`}>
-            {isProc ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : (resource.status === 'approved' ? <X className="w-4 h-4" /> : <Check className="w-4 h-4" />)}
-            {resource.status === 'approved' ? 'Reject' : 'Approve'}
-          </button>
-        )}
+          )}
+        </div>
 
-        <div className="flex items-center gap-2">
-          <button onClick={() => onEdit(resource)} className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 hover:scale-105" style={{ boxShadow: S.small, color: S.muted }}>
-            <Pencil className="w-3.5 h-3.5" />
+        {/* Secondary Actions (Edit/Delete) */}
+        <div className="flex items-center gap-1.5">
+          <button 
+            onClick={() => onEdit(resource)}
+            className="w-8.5 h-8.5 flex items-center justify-center rounded-lg transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+            style={{ boxShadow: S.small, color: S.accent, background: S.bg }}
+            title="Edit Resource"
+          >
+            <Pencil className="w-3 h-3" />
           </button>
-          <button onClick={() => onDelete(resource.id)} disabled={isProc}
-            className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 hover:scale-105"
-            style={{ boxShadow: needsConfirm ? 'inset 2px 2px 4px #b0b8cc' : S.small, background: needsConfirm ? '#EF4444' : 'transparent', color: needsConfirm ? '#fff' : '#EF4444' }}>
-            <Trash2 className="w-3.5 h-3.5" />
+          <button 
+            onClick={() => onDelete(resource.id)}
+            disabled={isProc}
+            className="w-8.5 h-8.5 flex items-center justify-center rounded-lg transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+            style={{ 
+              boxShadow: needsConfirm ? 'inset 2px 2px 4px #b0b8cc, inset -2px -2px 4px #ffffff' : S.small, 
+              background: needsConfirm ? '#EF4444' : S.bg,
+              color: needsConfirm ? '#fff' : '#EF4444'
+            }}
+            title="Delete Resource"
+          >
+            <Trash2 className="w-3 h-3" />
           </button>
         </div>
       </div>
 
+      {/* Flag Dismiss Link/Button */}
       {resource.reportCount > 0 && (
-        <button onClick={() => onDismissFlags(resource.id)} disabled={isProc}
-          className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-extrabold text-orange-600 uppercase tracking-widest transition-all duration-300 hover:bg-orange-50 disabled:opacity-60"
-          style={{ background: S.bg, boxShadow: S.small }}>
-          <ShieldCheck className="w-3.5 h-3.5" /> Clear Flags
+        <button 
+          onClick={() => onDismissFlags(resource.id)}
+          disabled={isProc}
+          className="w-full mt-2.5 flex items-center justify-center gap-1 py-1 rounded text-[8px] font-extrabold text-orange-600 uppercase tracking-widest transition-all duration-300 hover:bg-orange-50/50 disabled:opacity-60"
+        >
+          <ShieldCheck className="w-2.5 h-2.5" /> Clear Flags
         </button>
       )}
     </div>
@@ -799,12 +928,12 @@ export default function AdminDashboard() {
         <div className="space-y-1">
           <p className="text-[9px] font-bold uppercase tracking-widest px-3 mb-1 opacity-60" style={{ color: S.muted }}>Management</p>
           <div className="space-y-0.5">
-            <Link to="/admin/categories"
-              onClick={() => setSidebarOpen(false)}
-              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:translate-x-1 hover:bg-[rgba(255,255,255,0.4)] focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
-              style={{ color: S.fg, fontFamily: "'DM Sans',sans-serif" }}>
-              <FolderTree className="w-4 h-4" /> <span className="flex-1 truncate">Categories</span>
-            </Link>
+            <SideNavItem 
+              icon={<FolderTree className="w-4 h-4" />} 
+              label="Departments" 
+              active={activeTab === 'categories'} 
+              onClick={() => { setActiveTab('categories'); setSidebarOpen(false); }} 
+            />
             <a href="/" target="_blank" rel="noopener noreferrer"
               className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:translate-x-1 hover:bg-[rgba(255,255,255,0.4)]"
               style={{ color: S.fg, fontFamily: "'DM Sans',sans-serif" }}>
@@ -851,13 +980,17 @@ export default function AdminDashboard() {
   return (
     <div className="h-screen flex overflow-hidden" style={{ background: S.bg, fontFamily: "'DM Sans',sans-serif" }}>
       {toast && <Toast message={toast.message} type={toast.type} />}
-      {previewResource && (
-        <PreviewModal resource={previewResource} onClose={() => setPreviewResource(null)}
-          onApprove={handleApprove} onReject={handleReject} onDismissFlags={handleDismissFlags} processing={processing} />
-      )}
-      {editResource && (
-        <EditResourceModal resource={editResource} onClose={() => setEditResource(null)} onSave={handleEditSave} />
-      )}
+      <AnimatePresence>
+        {previewResource && (
+          <PreviewModal resource={previewResource} onClose={() => setPreviewResource(null)}
+            onApprove={handleApprove} onReject={handleReject} onDismissFlags={handleDismissFlags} processing={processing} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {editResource && (
+          <EditResourceModal resource={editResource} onClose={() => setEditResource(null)} onSave={handleEditSave} />
+        )}
+      </AnimatePresence>
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex lg:w-64 shrink-0 flex-col h-full">
@@ -889,12 +1022,16 @@ export default function AdminDashboard() {
             </button>
             <div>
               <h1 className="text-base font-extrabold tracking-tight" style={{ color: S.fg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
-                {navItems.find(n => n.id === activeTab)?.label ?? 'Dashboard'}
+                {activeTab === 'categories' ? 'Departments' : activeTab === 'moderators' ? 'Moderators' : (navItems.find(n => n.id === activeTab)?.label ?? 'Dashboard')}
               </h1>
               <p className="text-xs" style={{ color: S.muted }}>
                 {activeTab === 'submissions' 
                   ? `${submissionCount} new submission${submissionCount !== 1 ? 's' : ''}`
-                  : `${filtered.length} resource${filtered.length !== 1 ? 's' : ''}`
+                  : activeTab === 'categories'
+                    ? 'Manage departments and courses'
+                    : activeTab === 'moderators'
+                      ? 'Manage platform moderators'
+                      : `${filtered.length} resource${filtered.length !== 1 ? 's' : ''}`
                 }
               </p>
             </div>
@@ -917,10 +1054,10 @@ export default function AdminDashboard() {
         </header>
 
         {/* Scrollable content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+        <main className={`flex-1 overflow-y-auto ${activeTab === 'categories' ? 'p-0' : 'p-4 md:p-6 space-y-6'}`}>
 
           {/* Stats row */}
-          {!['submissions', 'moderators'].includes(activeTab) && (
+          {!['submissions', 'moderators', 'categories'].includes(activeTab) && (
             <Reveal delay={0.1} yOffset={20}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
@@ -945,7 +1082,7 @@ export default function AdminDashboard() {
           )}
 
           {/* Search + sort */}
-          {!['submissions', 'moderators'].includes(activeTab) && (
+          {!['submissions', 'moderators', 'categories'].includes(activeTab) && (
             <Reveal delay={0.2} yOffset={15}>
               <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                 <div className="flex items-center gap-3 px-4 py-3 rounded-2xl flex-1 min-w-0 transition-all duration-300 focus-within:ring-2 focus-within:ring-[#5B4FE9]"
@@ -994,6 +1131,8 @@ export default function AdminDashboard() {
             <SubmissionsManager />
           ) : activeTab === 'moderators' ? (
             <ModeratorsManager />
+          ) : activeTab === 'categories' ? (
+            <CategoryManager isEmbedded={true} />
           ) : filtered.length === 0 ? (
             <div className="rounded-[32px] p-16 text-center" style={{ background: S.bg, boxShadow: S.extruded }}>
               <div className="mb-4">
@@ -1013,7 +1152,7 @@ export default function AdminDashboard() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filtered.map(r => (
                 <ResourceCard key={r.id} resource={r}
                   onApprove={handleApprove} onReject={handleReject}

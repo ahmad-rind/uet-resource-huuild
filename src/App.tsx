@@ -8,7 +8,6 @@ import SubmitPage from './pages/SubmitPage';
 import SearchPage from './pages/SearchPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
-import CategoryManager from './pages/admin/CategoryManager';
 import ContactPage from './pages/ContactPage';
 
 /** Scroll to top on route change (including query params) */
@@ -86,7 +85,6 @@ function Root() {
           <Route path="/admin" element={<AdminLoginPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/categories" element={<CategoryManager />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

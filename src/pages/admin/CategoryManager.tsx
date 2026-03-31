@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   ArrowLeft, Plus, Pencil, Trash2, ChevronDown, ChevronRight,
   BookOpen, GraduationCap, Check, X, AlertCircle,
@@ -71,12 +71,13 @@ function useToast() {
 interface ConfirmState { show: boolean; title: string; msg: string; onConfirm: () => void }
 
 // ════════════════════════════════════════════════════════════════
-export default function CategoryManager() {
+export default function CategoryManager({ isEmbedded = false }: { isEmbedded?: boolean }) {
   const navigate = useNavigate();
   const { toasts, add: toast } = useToast();
 
-  const [authChecked, setAuthChecked] = useState(false);
+  const [authChecked, setAuthChecked] = useState(isEmbedded);
   useEffect(() => {
+    if (isEmbedded) return;
     const checkAndGuardSession = async () => {
       const session = getAdminSession();
       if (!session.loggedIn || Date.now() - session.loginAt > 8 * 60 * 60 * 1000) {
@@ -87,7 +88,7 @@ export default function CategoryManager() {
       setAuthChecked(true);
     };
     checkAndGuardSession();
-  }, [navigate]);
+  }, [navigate, isEmbedded]);
 
   // Supabase data
   const [dbDepts, setDbDepts]   = useState<any[]>([]);
@@ -353,7 +354,7 @@ export default function CategoryManager() {
   );
 
   return (
-    <div className="min-h-screen bg-[#d6dae8]" style={S.font}>
+    <div className={`${isEmbedded ? '' : 'min-h-screen'} bg-[#d6dae8]`} style={S.font}>
 
       {/* Toast */}
       <div className="fixed top-4 right-4 z-[200] space-y-2 pointer-events-none">
@@ -385,43 +386,44 @@ export default function CategoryManager() {
       )}
 
       {/* Header */}
-      <div className="sticky top-0 z-40 px-4 md:px-6 py-4" style={{ background: '#d6dae8', boxShadow: '0 4px 20px #b0b8cc' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/admin/dashboard')}
-              className={`${btn.icon}`} style={S.cardSm} title="Back to Dashboard">
-              <ArrowLeft size={18}/>
-            </button>
-            <div>
-              <h1 className="text-xl font-extrabold text-[#1a1d2e] tracking-tight" style={S.display}>
-                Category Manager
-              </h1>
-              <p className="text-xs text-[#64748B]">
-                {mergedDepts.length} departments · {mergedCourses.length || '—'} courses shown
-              </p>
+      {!isEmbedded && (
+        <div className="sticky top-0 z-40 px-4 md:px-6 py-4" style={{ background: '#d6dae8', boxShadow: '0 4px 20px #b0b8cc' }}>
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <Link to="/admin/dashboard"
+                className={`${btn.icon}`} style={S.cardSm} title="Back to Dashboard">
+                <ArrowLeft size={18}/>
+              </Link>
+              <div>
+                <h1 className="text-xl font-extrabold text-[#1a1d2e] tracking-tight" style={S.display}>
+                  Category Manager
+                </h1>
+                <p className="text-xs text-[#64748B]">
+                  {mergedDepts.length} departments · {mergedCourses.length || '—'} courses shown
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setShowInactive(p => !p)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all`}
+                style={S.cardSm}
+                title={showInactive ? 'Hide inactive' : 'Show inactive'}>
+                {showInactive ? <Eye size={13} className="text-[#5B4FE9]"/> : <EyeOff size={13} className="text-[#A0AEC0]"/>}
+                <span className={showInactive ? 'text-[#5B4FE9]' : 'text-[#A0AEC0]'}>
+                  {showInactive ? 'All' : 'Active only'}
+                </span>
+              </button>
+              <button onClick={fetchDb}
+                className={`w-10 h-10 rounded-2xl flex items-center justify-center text-[#64748B]`}
+                style={S.cardSm} title="Refresh from Supabase">
+                <RefreshCw size={16} className={loading ? 'animate-spin' : ''}/>
+              </button>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setShowInactive(p => !p)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-semibold transition-all`}
-              style={S.cardSm}
-              title={showInactive ? 'Hide inactive' : 'Show inactive'}>
-              {showInactive ? <Eye size={13} className="text-[#5B4FE9]"/> : <EyeOff size={13} className="text-[#A0AEC0]"/>}
-              <span className={showInactive ? 'text-[#5B4FE9]' : 'text-[#A0AEC0]'}>
-                {showInactive ? 'All' : 'Active only'}
-              </span>
-            </button>
-            <button onClick={fetchDb}
-              className={`w-10 h-10 rounded-2xl flex items-center justify-center text-[#64748B]`}
-              style={S.cardSm} title="Refresh from Supabase">
-              <RefreshCw size={16} className={loading ? 'animate-spin' : ''}/>
-            </button>
-          </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
-
         {/* Tab toggle */}
         <div className="flex gap-2 mb-6 p-1.5 rounded-2xl w-fit" style={S.inset}>
           {(['departments', 'courses'] as const).map(tab => (
