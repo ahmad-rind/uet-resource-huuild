@@ -24,7 +24,7 @@ Past papers · Notes · Lab manuals · And more.
 </div>
 
 <br />
-<img width="648" height="805" alt="Image" src="https://github.com/user-attachments/assets/c469562b-5082-411b-a8c4-55744db6539f" />
+
 
 ## 📖 Table of Contents
 
