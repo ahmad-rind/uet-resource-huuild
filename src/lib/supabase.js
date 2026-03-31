@@ -126,6 +126,9 @@ export async function getLiveCoursesData(forceRefresh = false) {
             name: c.name,
             ch: c.credit_hours
           }));
+        } else if (fallbackDepartments[d.name] && fallbackDepartments[d.name][sem]) {
+          // Fallback to static courses if Supabase has no courses for this semester
+          result[d.name][sem] = fallbackDepartments[d.name][sem];
         }
       });
     });

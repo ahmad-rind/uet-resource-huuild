@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Filter, ChevronDown, Upload, Loader, Search, SearchX } from 'lucide-react';
 import { getResources, getLiveCoursesData } from '../lib/supabase.js';
+import { departments as staticDepartments } from '../data/courses.js';
 import ResourceCard from '../components/ResourceCard.js';
 import ResourceDetailModal from '../components/ResourceDetailModal.js';
 import { ScrollProgress } from '../components/ScrollProgress.js';
@@ -27,13 +28,21 @@ export default function BrowsePage() {
     });
   }, []);
 
-  const semesterOptions = selectedDept && departments[selectedDept]
-    ? Object.keys(departments[selectedDept] || {}).sort((a, b) => Number(a) - Number(b))
+  const semesterOptions = selectedDept 
+    ? ['1', '2', '3', '4', '5', '6', '7', '8']
     : [];
 
-  const courseOptions = selectedDept && selectedSemester && departments[selectedDept]
-    ? (departments[selectedDept] || {})[selectedSemester] || []
+  const dynamicCourses = selectedDept && selectedSemester && departments[selectedDept]
+    ? (departments[selectedDept] || {})[selectedSemester]
+    : null;
+
+  const staticCourses = selectedDept && selectedSemester && staticDepartments[selectedDept as keyof typeof staticDepartments]
+    ? staticDepartments[selectedDept as keyof typeof staticDepartments][selectedSemester as keyof typeof staticDepartments[keyof typeof staticDepartments]] || []
     : [];
+
+  const courseOptions = (dynamicCourses && dynamicCourses.length > 0)
+    ? dynamicCourses
+    : staticCourses;
 
   // Sync state with URL params on mount or URL change
   useEffect(() => {
