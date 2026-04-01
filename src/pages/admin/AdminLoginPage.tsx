@@ -176,7 +176,7 @@ export default function AdminLoginPage() {
           <div className="flex flex-row md:flex-col items-center md:items-center gap-4 md:gap-0 md:text-center text-left">
             {/* Logo Badge */}
             <div className="w-[60px] h-[60px] md:w-[72px] md:h-[72px] rounded-2xl flex items-center justify-center md:mb-6 bg-[#d6dae8] admin-outset transition-all duration-300 hover:scale-105 p-2 md:p-3 shrink-0">
-              <img src="/uettaxilalogo.webp" alt="UET Logo" className="w-full h-full object-contain opacity-90" />
+              <img src="/uettaxilalogo.webp" alt="University of Engineering and Technology Taxila official logo" className="w-full h-full object-contain opacity-90" />
             </div>
 
             <div className="flex flex-col md:items-center">

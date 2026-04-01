@@ -73,7 +73,7 @@ export default function Footer() {
             >
               <img 
                 src="/uettaxilalogo.webp" 
-                alt="UET Taxila Logo" 
+                alt="University of Engineering and Technology Taxila official logo" 
                 className="w-full h-full object-contain"
                 width="44" height="44"
               />

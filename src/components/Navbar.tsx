@@ -74,7 +74,7 @@ export default function Navbar() {
                     className="w-10 h-10 md:w-11 md:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:-translate-y-0.5 overflow-hidden p-1.5 md:p-2 shrink-0"
                     style={{ boxShadow: '4px 4px 8px #b0b8cc, -4px -4px 8px #ffffff', background: '#d6dae8' }}
                   >
-                    <img src="/uettaxilalogo.webp" alt="UET Taxila Logo" className="w-full h-full object-contain" width="44" height="44" />
+                    <img src="/uettaxilalogo.webp" alt="University of Engineering and Technology Taxila official logo" className="w-full h-full object-contain" width="44" height="44" />
                   </div>
                   <div className={`flex flex-col justify-center transition-all duration-300 whitespace-nowrap overflow-hidden ${isSearchExpanded ? 'max-w-0 opacity-0 ml-0 sm:max-w-[200px] sm:opacity-100 sm:ml-3' : 'max-w-[200px] opacity-100 ml-3'}`}>
                     <span className="font-bold text-[#1a1d2e] text-[12px] sm:text-sm leading-tight block uppercase tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UET Taxila</span>

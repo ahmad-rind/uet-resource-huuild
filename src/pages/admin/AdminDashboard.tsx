@@ -902,7 +902,7 @@ export default function AdminDashboard() {
         <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
           style={{ boxShadow: S.small, background: S.glass }}>
           <div className="w-6 h-6 rounded-lg flex items-center justify-center overflow-hidden p-0.5">
-            <img src="/uettaxilalogo.webp" alt="Logo" className="w-full h-full object-contain" />
+            <img src="/uettaxilalogo.webp" alt="University of Engineering and Technology Taxila official logo" className="w-full h-full object-contain" />
           </div>
         </div>
         <div className="min-w-0">
