@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
   Github,
-  Twitter,
+  Instagram,
   Mail,
   MessageSquare
 } from 'lucide-react';
@@ -64,27 +64,25 @@ export default function Footer() {
       <div className="footer-grid">
         {/* Brand & Social Section */}
         <div className="footer-col relative lg:pr-8 flex flex-col justify-center">
-          <div className="flex items-center gap-4 mb-4 group">
+          <Link to="/" className="flex items-center gap-3 mb-4 group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9] focus:ring-offset-2 focus:ring-offset-[#d6dae8] rounded-xl shrink-0 w-max">
             <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 bg-[#d6dae8] p-2"
+              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:-translate-y-0.5 p-2 shrink-0 bg-[#d6dae8]"
               style={{
-                boxShadow: '4px 4px 10px #b0b8cc, -4px -4px 10px #ffffff'
+                boxShadow: '4px 4px 8px #b0b8cc, -4px -4px 8px #ffffff'
               }}
             >
               <img 
                 src="/uettaxilalogo.webp" 
-                alt="UET Logo" 
-                className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                alt="UET Taxila Logo" 
+                className="w-full h-full object-contain"
                 width="44" height="44"
               />
             </div>
-            <div>
-              <h3 className="font-extrabold text-[#1a1d2e] text-lg tracking-tighter leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                UET Taxila
-                <span className="block text-[#4A3FD8] text-xs font-bold opacity-90">Resource Hub</span>
-              </h3>
+            <div className="flex flex-col justify-center">
+              <span className="font-bold text-[#1a1d2e] text-sm leading-tight block uppercase tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UET Taxila</span>
+              <span className="text-[#475569] text-[10px] leading-tight block opacity-80" style={{ fontFamily: "'DM Sans', sans-serif" }}>Resource Hub</span>
             </div>
-          </div>
+          </Link>
 
           <p className="text-[13px] text-[#475569] leading-[1.6] mb-5 max-w-[280px] font-medium" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             The definitive digital ecosystem for UET Taxila students. Share, discover, and excel.
@@ -92,9 +90,9 @@ export default function Footer() {
 
           <div className="flex gap-4">
             {[
-              { icon: Github, href: 'https://github.com', label: 'GitHub' },
-              { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-              { icon: Mail, href: 'mailto:contact@uettaxila.edu.pk', label: 'Email' }
+              { icon: Github, href: 'https://github.com/ahmad-rind', label: 'GitHub' },
+              { icon: Instagram, href: 'https://www.instagram.com/ahmad_rind49/', label: 'Instagram' },
+              { icon: Mail, href: 'mailto:ahmadrind20@gmail.com', label: 'Email' }
             ].map((item, i) => (
               <a
                 key={i}

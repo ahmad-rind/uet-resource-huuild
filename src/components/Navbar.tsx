@@ -68,15 +68,15 @@ export default function Navbar() {
           <div className="px-4 md:px-8">
             <div className="flex items-center h-16 relative">
               {/* Left: Logo */}
-              <div className="flex-1 flex items-center">
-                <Link to="/" className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9] focus:ring-offset-2 focus:ring-offset-[#d6dae8] rounded-xl shrink-0">
+              <div className="flex-1 flex items-center transition-all duration-300">
+                <Link to="/" className="flex items-center group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9] focus:ring-offset-2 focus:ring-offset-[#d6dae8] rounded-xl shrink-0">
                   <div
-                    className="w-10 h-10 md:w-11 md:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:-translate-y-0.5 overflow-hidden p-1.5 md:p-2"
+                    className="w-10 h-10 md:w-11 md:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:-translate-y-0.5 overflow-hidden p-1.5 md:p-2 shrink-0"
                     style={{ boxShadow: '4px 4px 8px #b0b8cc, -4px -4px 8px #ffffff', background: '#d6dae8' }}
                   >
                     <img src="/uettaxilalogo.webp" alt="UET Taxila Logo" className="w-full h-full object-contain" width="44" height="44" />
                   </div>
-                  <div className="block">
+                  <div className={`flex flex-col justify-center transition-all duration-300 whitespace-nowrap overflow-hidden ${isSearchExpanded ? 'max-w-0 opacity-0 ml-0 sm:max-w-[200px] sm:opacity-100 sm:ml-3' : 'max-w-[200px] opacity-100 ml-3'}`}>
                     <span className="font-bold text-[#1a1d2e] text-[12px] sm:text-sm leading-tight block uppercase tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UET Taxila</span>
                     <span className="text-[#475569] text-[8px] sm:text-[10px] leading-tight block opacity-80" style={{ fontFamily: "'DM Sans', sans-serif" }}>Resource Hub</span>
                   </div>
@@ -111,8 +111,8 @@ export default function Navbar() {
                 <form ref={searchRef} onSubmit={handleSearch} className="flex items-center m-0 p-0">
                   <div
                     className={`flex items-center gap-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden h-10 md:h-11 ${isSearchExpanded
-                      ? 'md:w-64 w-32 sm:w-48 px-3 mr-2 opacity-100 translate-x-0'
-                      : 'w-0 px-0 mr-0 opacity-0 translate-x-4 pointer-events-none'
+                      ? 'md:w-64 w-[160px] sm:w-48 px-3 mr-2 opacity-100 translate-x-0 bg-[#d6dae8]'
+                      : 'w-0 px-0 mr-0 opacity-0 translate-x-4 pointer-events-none bg-[#d6dae8]'
                       }`}
                     style={{
                       borderRadius: '16px',

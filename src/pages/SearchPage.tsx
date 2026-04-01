@@ -105,7 +105,7 @@ export default function SearchPage() {
       <ScrollProgress />
       {/* ── Hero-style Header ────────────────────────────────────────────── */}
       <Reveal delay={0.1}>
-      <section className="pt-10 pb-6 px-6 md:px-8 max-w-7xl mx-auto">
+      <section className="pt-10 pb-6 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="text-left w-full mb-2">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-4 bg-[#d6dae8]"
@@ -134,24 +134,24 @@ export default function SearchPage() {
         </div>
 
         {/* Search Bar — Refined Neumorphic */}
-        <form onSubmit={handleSearch} className="flex gap-4 mt-6 max-w-2xl">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mt-5 sm:mt-6 max-w-2xl w-full">
           <div
-            className="flex-1 flex items-center gap-3 px-5 py-4 rounded-2xl bg-[#d6dae8]"
+            className="flex-1 min-w-0 flex items-center gap-3 px-5 py-4 rounded-2xl bg-[#d6dae8]"
             style={{ boxShadow: 'inset 10px 10px 20px #b0b8cc, inset -10px -10px 20px #ffffff' }}
           >
-            <Search className="w-5 h-5 text-[#4A3FD8]" />
+            <Search className="w-5 h-5 text-[#4A3FD8] shrink-0" />
             <input
               type="text"
-              placeholder="Search by title, course, or department..."
+              placeholder="Search title, course, or department..."
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
-              className="flex-1 bg-transparent text-[#1a1d2e] placeholder-[#475569]/60 outline-none text-[15px] font-medium"
+              className="flex-1 min-w-0 bg-transparent text-[#1a1d2e] placeholder-[#475569]/60 outline-none text-[15px] font-medium"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             />
           </div>
           <button
             type="submit"
-            className="px-8 py-4 rounded-2xl text-white font-bold text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-95"
+            className="w-full sm:w-auto px-8 py-4 rounded-2xl text-white font-bold text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-95 shrink-0"
             style={{ background: '#5B4FE9', fontFamily: "'DM Sans', sans-serif", boxShadow: '8px 8px 16px #b0b8cc, -8px -8px 16px #ffffff' }}
           >
             Find
@@ -161,12 +161,12 @@ export default function SearchPage() {
       </Reveal>
 
       <Reveal delay={0.2}>
-      <div className="max-w-7xl mx-auto px-6 md:px-8 pb-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pb-20">
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Filters Sidebar */}
           <aside className="lg:w-72 shrink-0">
             <div
-              className="rounded-[32px] p-8 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto bg-[#d6dae8]"
+              className="rounded-[32px] p-6 lg:p-8 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto bg-[#d6dae8]"
               style={{ boxShadow: '12px 12px 24px #b0b8cc, -12px -12px 24px #ffffff' }}
             >
               <div className="flex items-center gap-3 mb-8">
