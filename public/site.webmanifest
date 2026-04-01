@@ -4,7 +4,7 @@
   "description": "Free academic resources, past papers, notes, and study materials for UET Taxila students.",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "any",
+  "orientation": "portrait",
   "theme_color": "#5B4FE9",
   "background_color": "#d6dae8",
   "categories": ["education"],
