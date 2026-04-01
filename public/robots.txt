@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://uet-resource-hub.vercel.app/sitemap.xml
+Sitemap: https://uetresourcehub.app/sitemap.xml
