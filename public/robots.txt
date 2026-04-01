@@ -9,7 +9,7 @@
 User-agent: Googlebot
 Allow: /
 Disallow: /admin/
-Disallow: /*?*  # Optional: prevent crawling dynamic search query strings if they create duplicates
+Allow: /search?q=
 Disallow: /api/
 
 # ------------------------------------------

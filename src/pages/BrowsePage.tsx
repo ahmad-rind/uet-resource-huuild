@@ -7,6 +7,7 @@ import ResourceCard from '../components/ResourceCard.js';
 import ResourceDetailModal from '../components/ResourceDetailModal.js';
 import { ScrollProgress } from '../components/ScrollProgress.js';
 import { Reveal } from '../components/Reveal.js';
+import { Helmet } from 'react-helmet-async';
 
 export default function BrowsePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -143,6 +144,13 @@ export default function BrowsePage() {
 
   return (
     <div className="min-h-screen bg-[#d6dae8]">
+      <Helmet>
+        <title>Browse UET Taxila Resources | Past Papers & Notes by Department</title>
+        <meta name="description" content="Browse free past papers, notes, and study materials for all UET Taxila departments. Filter by CS, EE, ME, CE, SE and semester." />
+        <link rel="canonical" href="https://uetresourcehub.app/browse" />
+        <meta property="og:title" content="Browse Resources — UET Taxila Resource Hub" />
+        <meta property="og:url" content="https://uetresourcehub.app/browse" />
+      </Helmet>
       <ScrollProgress />
       {/* ── Hero-style Header ────────────────────────────────────────────── */}
       <Reveal delay={0.1}>

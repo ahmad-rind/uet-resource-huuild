@@ -7,6 +7,7 @@ import ResourceDetailModal from '../components/ResourceDetailModal.js';
 import { searchResources, getLiveCoursesData } from '../lib/supabase.js';
 import { ScrollProgress } from '../components/ScrollProgress.js';
 import { Reveal } from '../components/Reveal.js';
+import { Helmet } from 'react-helmet-async';
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -102,6 +103,13 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-[#d6dae8]">
+      <Helmet>
+        <title>{query ? `${query} — Search UET Taxila Resources` : 'Search UET Taxila Study Materials | Past Papers, Notes'}</title>
+        <meta name="description" content={query ? `Search results for "${query}" in UET Taxila resources.` : 'Search and find UET Taxila past papers, notes, assignments across all departments.'} />
+        <link rel="canonical" href={`https://uetresourcehub.app/search${query ? `?q=${encodeURIComponent(query)}` : ''}`} />
+        <meta property="og:title" content={query ? `${query} — UET Taxila Resources` : 'Search — UET Taxila Resource Hub'} />
+        <meta property="og:url" content={`https://uetresourcehub.app/search${query ? `?q=${encodeURIComponent(query)}` : ''}`} />
+      </Helmet>
       <ScrollProgress />
       {/* ── Hero-style Header ────────────────────────────────────────────── */}
       <Reveal delay={0.1}>

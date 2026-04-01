@@ -12,6 +12,7 @@ import {
 import { submitContactRequest } from '../lib/supabase';
 import { ScrollProgress } from '../components/ScrollProgress.js';
 import { Reveal } from '../components/Reveal.js';
+import { Helmet } from 'react-helmet-async';
 
 // Neumorphic Design Tokens
 const S = {
@@ -64,6 +65,13 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#d6dae8] flex items-center justify-center py-12 md:py-0">
+      <Helmet>
+        <title>Contact Us | UET Taxila Resource Hub</title>
+        <meta name="description" content="Get in touch with UET Taxila Resource Hub. Report issues, suggest improvements, or ask questions." />
+        <link rel="canonical" href="https://uetresourcehub.app/contact" />
+        <meta property="og:title" content="Contact Us — UET Taxila Resource Hub" />
+        <meta property="og:url" content="https://uetresourcehub.app/contact" />
+      </Helmet>
       <ScrollProgress />
       <div className="max-w-7xl w-full mx-auto px-6 md:px-8">
       <Reveal delay={0.15} yOffset={40}>

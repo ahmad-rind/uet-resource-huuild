@@ -6,6 +6,7 @@ import ResourceCard from '../components/ResourceCard.js';
 import ResourceDetailModal from '../components/ResourceDetailModal.js';
 import { Reveal } from '../components/Reveal.js';
 import { ScrollProgress } from '../components/ScrollProgress.js';
+import { Helmet } from 'react-helmet-async';
 
 export const deptIcons: Record<string, React.ReactNode> = {
   'Civil Engineering (BSc)': <Building2 className="w-6 h-6 text-[#F59E0B]" />,
@@ -64,6 +65,14 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#d6dae8]">
+      <Helmet>
+        <title>UET Taxila Resource Hub | Free Past Papers, Notes & Study Materials</title>
+        <meta name="description" content="Free past papers, notes, assignments, and study materials for UET Taxila students. Browse by department, semester, and subject. Community-driven academic hub." />
+        <link rel="canonical" href="https://uetresourcehub.app/" />
+        <meta property="og:title" content="UET Taxila Resource Hub | Free Past Papers & Notes" />
+        <meta property="og:description" content="Access free past papers, notes, and study materials for all UET Taxila departments." />
+        <meta property="og:url" content="https://uetresourcehub.app/" />
+      </Helmet>
       <ScrollProgress />
       {/* ── Hero Section ────────────────────────────────────────────── */}
       <section className="py-24 md:py-36 px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center">

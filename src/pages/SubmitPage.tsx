@@ -11,6 +11,7 @@ import { submitResource, getLiveCoursesData } from '../lib/supabase.js';
 import { resourceTypes, departments as staticDepartments } from '../data/courses.js';
 import { deptIcons } from './HomePage.js';
 import { ScrollProgress } from '../components/ScrollProgress.js';
+import { Helmet } from 'react-helmet-async';
 
 interface FormData {
   department: string;
@@ -255,6 +256,13 @@ export default function SubmitPage() {
 
   return (
     <div className="flex flex-col items-center justify-center bg-[#d6dae8] py-6 px-4 md:px-8 min-h-[calc(100vh-80px)]">
+      <Helmet>
+        <title>Submit Resources | Contribute to UET Taxila Resource Hub</title>
+        <meta name="description" content="Share your past papers, notes, lab manuals and study materials with UET Taxila students. Help the community grow." />
+        <link rel="canonical" href="https://uetresourcehub.app/submit" />
+        <meta property="og:title" content="Submit Resources — UET Taxila Resource Hub" />
+        <meta property="og:url" content="https://uetresourcehub.app/submit" />
+      </Helmet>
       <ScrollProgress />
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
