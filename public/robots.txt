@@ -1,3 +1,36 @@
+# ==========================================
+# UET Resource Hub - robots.txt
+# Domain: https://uetresourcehub.app
+# ==========================================
+
+# ------------------------------------------
+# Rule 1: Googlebot configurations
+# ------------------------------------------
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /*?*  # Optional: prevent crawling dynamic search query strings if they create duplicates
+Disallow: /api/
+
+# ------------------------------------------
+# Rule 2: Bingbot configurations
+# ------------------------------------------
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 1
+
+# ------------------------------------------
+# Rule 3: General Rules for All Other Bots
+# ------------------------------------------
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /api/
+
+# ==========================================
+# SITEMAP LOCATION
+# ==========================================
 Sitemap: https://uetresourcehub.app/sitemap.xml
