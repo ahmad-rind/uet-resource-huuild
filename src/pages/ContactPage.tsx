@@ -64,7 +64,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#d6dae8] flex items-center justify-center py-12 md:py-0">
+    <div className="min-h-screen bg-[#d6dae8] flex items-center justify-center pt-20 pb-8 md:py-0">
       <Helmet>
         <title>Contact Us | UET Taxila Resource Hub</title>
         <meta name="description" content="Get in touch with UET Taxila Resource Hub. Report issues, suggest improvements, or ask questions." />
@@ -73,12 +73,12 @@ export default function ContactPage() {
         <meta property="og:url" content="https://uetresourcehub.app/contact" />
       </Helmet>
       <ScrollProgress />
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-8">
+      <div className="max-w-7xl w-full mx-auto px-4 md:px-8">
       <Reveal delay={0.15} yOffset={40}>
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 py-8 lg:py-0">
+        <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-12 lg:gap-20 py-4 md:py-8 lg:py-0">
           
           {/* ── Left Column: Information ── */}
-          <div className="lg:w-1/2 text-left space-y-8 order-2 lg:order-1">
+          <div className="lg:w-1/2 text-left space-y-5 md:space-y-8 order-1 lg:order-1">
             <div className="space-y-6">
               {/* Badge */}
               <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#d6dae8] w-fit"
@@ -89,24 +89,24 @@ export default function ContactPage() {
                 </span>
               </div>
 
-              <h1 className="text-[2.25rem] md:text-[3.5rem] lg:text-[4rem] font-bold leading-tight tracking-tight text-[#1a1d2e]"
+              <h1 className="text-[1.75rem] md:text-[3.5rem] lg:text-[4rem] font-bold leading-tight tracking-tight text-[#1a1d2e]"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C63FF] to-[#A78BFA]">Touch</span>
               </h1>
               
-              <p className="text-lg text-[#475569] max-w-lg leading-relaxed"
+              <p className="text-base md:text-lg text-[#475569] max-w-lg leading-relaxed"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 Have a suggestion to improve the hub? Or found an issue that needs fixing? 
                 Our team is ready to help you thrive.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="p-5 rounded-3xl bg-[#d6dae8]" style={{ boxShadow: S.small }}>
+            <div className="grid grid-cols-2 gap-3 md:gap-6">
+              <div className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-[#d6dae8]" style={{ boxShadow: S.small }}>
                 <h4 className="text-[11px] font-bold text-[#4A3FD8] uppercase tracking-wider mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>Response Time</h4>
                 <p className="text-sm font-semibold text-[#1a1d2e]">Under 24 Hours</p>
               </div>
-              <div className="p-5 rounded-3xl bg-[#d6dae8]" style={{ boxShadow: S.small }}>
+              <div className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-[#d6dae8]" style={{ boxShadow: S.small }}>
                 <h4 className="text-[11px] font-bold text-[#4A3FD8] uppercase tracking-wider mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>Community Led</h4>
                 <p className="text-sm font-semibold text-[#1a1d2e]">Volunteer Based</p>
               </div>
@@ -114,8 +114,8 @@ export default function ContactPage() {
           </div>
 
           {/* ── Right Column: Form Card ── */}
-          <div className="lg:w-1/2 w-full order-1 lg:order-2">
-            <div className="rounded-[48px] p-8 md:p-10 bg-[#d6dae8]" style={{ boxShadow: S.extruded }}>
+          <div className="lg:w-1/2 w-full order-2 lg:order-2">
+            <div className="rounded-[28px] md:rounded-[48px] p-5 md:p-10 bg-[#d6dae8]" style={{ boxShadow: S.extruded }}>
               
               {status === 'success' ? (
                 <div className="text-center py-16">
@@ -134,8 +134,8 @@ export default function ContactPage() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.15em] px-1 text-[#475569]" style={{ fontFamily: "'DM Sans', sans-serif" }}>Full Name</label>
                       <div className="relative group">
