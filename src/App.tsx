@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -11,6 +11,32 @@ const SearchPage = lazy(() => import('./pages/SearchPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+
+/** Prefetch all public page chunks during idle time so navigation is instant */
+const pagePrefetches = [
+  () => import('./pages/BrowsePage'),
+  () => import('./pages/SubmitPage'),
+  () => import('./pages/SearchPage'),
+  () => import('./pages/ContactPage'),
+];
+
+function usePrefetchPages() {
+  const hasPrefetched = useRef(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (hasPrefetched.current || pathname !== '/') return;
+    hasPrefetched.current = true;
+
+    const schedule = typeof requestIdleCallback === 'function'
+      ? requestIdleCallback
+      : (cb: () => void) => setTimeout(cb, 200);
+
+    schedule(() => {
+      pagePrefetches.forEach(load => load());
+    });
+  }, [pathname]);
+}
 
 /** Minimal loading fallback */
 function PageLoader() {
@@ -91,6 +117,7 @@ function useIsAdmin() {
 
 /** Root — decides which shell to render based on route */
 function Root() {
+  usePrefetchPages();
   const isAdmin = useIsAdmin();
 
   if (isAdmin) {

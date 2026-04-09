@@ -98,6 +98,12 @@ export async function getResources(filters = {}) {
 
 let cachedCoursesData = null;
 
+/** Pre-warm courses cache in the background (fire-and-forget) */
+export function prefetchCoursesData() {
+  if (cachedCoursesData) return; // Already cached
+  getLiveCoursesData().catch(() => {}); // Swallow errors silently
+}
+
 export async function getLiveCoursesData(forceRefresh = false) {
   if (cachedCoursesData && !forceRefresh) return cachedCoursesData;
   try {

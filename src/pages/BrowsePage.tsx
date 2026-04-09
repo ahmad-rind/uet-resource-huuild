@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Filter, ChevronDown, Upload, Loader, Search, SearchX } from 'lucide-react';
 import { getResources, getLiveCoursesData } from '../lib/supabase.js';
-import { departments as staticDepartments } from '../data/courses.js';
+import { departments as staticDepartments, departmentList as staticDepartmentList } from '../data/courses.js';
 import ResourceCard from '../components/ResourceCard.js';
 import ResourceDetailModal from '../components/ResourceDetailModal.js';
 import { ScrollProgress } from '../components/ScrollProgress.js';
@@ -22,8 +22,8 @@ export default function BrowsePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 30;
 
-  const [departments, setDepartments] = useState<any>({});
-  const [departmentList, setDepartmentList] = useState<string[]>([]);
+  const [departments, setDepartments] = useState<any>(staticDepartments);
+  const [departmentList, setDepartmentList] = useState<string[]>(staticDepartmentList);
 
   useEffect(() => {
     getLiveCoursesData().then(data => {
@@ -166,7 +166,7 @@ export default function BrowsePage() {
       </Helmet>
       <ScrollProgress />
       {/* ── Hero-style Header ────────────────────────────────────────────── */}
-      <Reveal delay={0.1}>
+      <Reveal delay={0.05}>
       <section className="pt-10 pb-6 px-6 md:px-8 max-w-7xl mx-auto">
         <div className="text-left w-full mb-2">
           {/* Badge — small, refined, subtle */}
@@ -190,7 +190,7 @@ export default function BrowsePage() {
       </section>
       </Reveal>
 
-      <Reveal delay={0.2}>
+      <Reveal delay={0.1}>
       <div className="max-w-7xl mx-auto px-6 md:px-8 pb-20">
         <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
           {/* Filters Sidebar */}

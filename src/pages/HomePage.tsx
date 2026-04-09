@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, Users, Library, ChevronRight, Building2, Leaf, Zap, Cpu, Settings, Bot, Factory, Laptop, Brain, Monitor, Signal, Mouse, Calculator, Atom, Upload } from 'lucide-react';
-import { getRecentResources, getTotalResourceCount, getContributorCount } from '../lib/supabase.js';
+import { getRecentResources, getTotalResourceCount, getContributorCount, prefetchCoursesData } from '../lib/supabase.js';
 import ResourceCard from '../components/ResourceCard.js';
 import ResourceDetailModal from '../components/ResourceDetailModal.js';
 import { Reveal } from '../components/Reveal.js';
@@ -52,6 +52,8 @@ export default function HomePage() {
 
         // Cache for next load
         localStorage.setItem('uet_site_stats', JSON.stringify(newStats));
+        // Pre-warm courses cache so Browse page loads instantly
+        prefetchCoursesData();
       } catch (err) {
         console.error('HomePage load error:', err);
       } finally {
@@ -132,13 +134,13 @@ export default function HomePage() {
       {/* Departments Grid */}
       <Reveal delay={0.2}>
         <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center justify-between mb-6 md:mb-10 gap-4">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1a1d2e] tracking-tight"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Browse by Department
             </h2>
             <Link to="/browse"
-              className="flex items-center gap-1 text-sm text-[#4A3FD8] font-semibold hover:gap-2 transition-all duration-200 focus:outline-none"
+              className="flex items-center gap-1 text-sm text-[#4A3FD8] font-semibold hover:gap-2 transition-all duration-200 focus:outline-none whitespace-nowrap shrink-0"
               style={{ fontFamily: "'DM Sans', sans-serif" }}>
               View all <ChevronRight className="w-4 h-4" />
             </Link>
@@ -179,13 +181,13 @@ export default function HomePage() {
       {/* Recent Submissions */}
       <Reveal delay={0.2}>
         <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center justify-between mb-6 md:mb-10 gap-4">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1a1d2e] tracking-tight"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Recent Submissions
             </h2>
             <Link to="/browse"
-              className="flex items-center gap-1 text-sm text-[#4A3FD8] font-semibold hover:gap-2 transition-all duration-200 focus:outline-none"
+              className="flex items-center gap-1 text-sm text-[#4A3FD8] font-semibold hover:gap-2 transition-all duration-200 focus:outline-none whitespace-nowrap shrink-0"
               style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Browse all <ChevronRight className="w-4 h-4" />
             </Link>
