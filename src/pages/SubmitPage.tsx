@@ -275,7 +275,7 @@ export default function SubmitPage() {
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #b0b8cc; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--neu-muted); border-radius: 10px; }
       `}</style>
       
       <main className="max-w-3xl mx-auto w-full px-2 sm:px-0">
@@ -303,7 +303,7 @@ export default function SubmitPage() {
                         let statusClasses = '';
                         let statusStyle: React.CSSProperties = { color: 'var(--neu-muted)' };
                         if (isActive) { statusClasses = 'text-white shadow-sm'; statusStyle = { background: 'var(--neu-accent)' }; }
-                        else if (isCompleted) { statusStyle = { background: 'rgba(91, 79, 233, 0.1)', color: 'var(--neu-accent)' }; }
+                        else if (isCompleted) { statusStyle = { background: 'var(--neu-bg)', boxShadow: 'var(--neu-shadow-inset-sm)', color: 'var(--neu-accent)' }; }
                         
                         return (
                           <div key={stepName} className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 ${statusClasses}`} style={statusStyle}>

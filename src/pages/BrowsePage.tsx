@@ -402,7 +402,7 @@ export default function BrowsePage() {
                 <Link
                   to={`/submit?department=${encodeURIComponent(selectedDept)}&semester=${selectedSemester}&course=${selectedCourse}`}
                   className="inline-flex items-center gap-3 px-10 py-4 rounded-[20px] text-white text-[15px] font-bold transition-all duration-300 hover:-translate-y-1"
-                  style={{ background: 'var(--neu-accent)', boxShadow: '8px 8px 20px rgba(91, 79, 233, 0.3)', fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ background: 'var(--neu-accent)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
                 >
                   <Upload className="w-5 h-5" />
                   Become a Contributor

@@ -142,7 +142,7 @@ export default function ContactPage() {
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.15em] px-1" style={{ fontFamily: "'DM Sans', sans-serif", color: S.muted }}>Full Name</label>
                       <div className="relative group">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#A3B1C6] transition-colors group-focus-within:text-[#4A3FD8]" />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 transition-colors group-focus-within:!text-[#5B4FE9]" style={{ color: S.muted }} />
                         <input
                           required
                           type="text"
@@ -158,7 +158,7 @@ export default function ContactPage() {
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.15em] px-1" style={{ fontFamily: "'DM Sans', sans-serif", color: S.muted }}>Email</label>
                       <div className="relative group">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#A3B1C6] transition-colors group-focus-within:text-[#4A3FD8]" />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 transition-colors group-focus-within:!text-[#5B4FE9]" style={{ color: S.muted }} />
                         <input
                           required
                           type="email"
@@ -228,7 +228,7 @@ export default function ContactPage() {
                   </div>
 
                   {status === 'error' && (
-                    <div className="flex items-center gap-2 p-4 rounded-2xl bg-red-50 text-red-600 text-[11px] font-bold" style={{ border: '1px solid rgba(220, 38, 38, 0.1)' }}>
+                    <div className="flex items-center gap-2 p-4 rounded-2xl text-[11px] font-bold" style={{ background: S.bg, color: '#EF4444', border: '1px solid #EF4444', boxShadow: S.inset }}>
                       <AlertCircle className="w-4 h-4 shrink-0" />
                       {errorMsg}
                     </div>
