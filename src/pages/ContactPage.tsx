@@ -166,8 +166,8 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="hello@example.com"
-                          className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-300 focus:ring-4 focus:ring-[#5B4FE9]/10 shadow-[inset_4px_4px_8px_#b0b8cc,_inset_-4px_-4px_8px_#ffffff]"
-                          style={{ background: S.bg, color: S.fg, fontFamily: "'DM Sans', sans-serif" }}
+                          className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-300 focus:ring-4 focus:ring-[#5B4FE9]/10"
+                          style={{ background: S.bg, color: S.fg, fontFamily: "'DM Sans', sans-serif", boxShadow: S.inset }}
                         />
                       </div>
                     </div>
@@ -234,23 +234,60 @@ export default function ContactPage() {
                     </div>
                   )}
 
+                  <style>{`
+                    .contact-send-btn {
+                      display: flex;
+                      align-items: center;
+                      overflow: hidden;
+                      transition: all 0.2s;
+                    }
+                    .contact-send-btn span.send-text {
+                      display: block;
+                      margin-left: 0.3em;
+                      transition: all 0.3s ease-in-out;
+                    }
+                    .contact-send-btn svg.send-icon {
+                      display: block;
+                      transform-origin: center center;
+                      transition: transform 0.3s ease-in-out;
+                    }
+                    /* Changed hover from the button selector to apply to children */
+                    .contact-send-btn:hover .svg-wrapper {
+                      animation: fly-1 0.6s ease-in-out infinite alternate;
+                    }
+                    .contact-send-btn:hover svg.send-icon {
+                      transform: translateX(3em) rotate(45deg) scale(1.1);
+                    }
+                    .contact-send-btn:hover span.send-text {
+                      transform: translateX(12em);
+                    }
+                    .contact-send-btn:active {
+                      transform: scale(0.95);
+                    }
+                    @keyframes fly-1 {
+                      from { transform: translateY(0.1em); }
+                      to { transform: translateY(-0.1em); }
+                    }
+                  `}</style>
+                  
                   <button
                     disabled={status === 'loading'}
                     type="submit"
-                    className="w-full flex items-center justify-center gap-3 py-4.5 rounded-[20px] text-white text-[15px] font-bold transition-all duration-300 hover:-translate-y-1 active:translate-y-0.5 disabled:opacity-50"
+                    className="w-fit ml-auto px-6 py-3 flex items-center justify-center gap-2 rounded-2xl text-white text-[15px] font-bold disabled:opacity-50 contact-send-btn"
                     style={{ 
-                      background: S.accent,
-                      boxShadow: '8px 8px 24px rgba(91, 79, 233, 0.3)',
+                      background: status === 'loading' ? S.muted : S.accent,
+                      boxShadow: 'var(--neu-shadow-extruded)',
                       fontFamily: "'DM Sans', sans-serif",
-                      paddingTop: '1rem',
-                      paddingBottom: '1rem'
                     }}
                   >
                     {status === 'loading' ? (
-                      <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <>
-                        <Send className="w-4 h-4" /> Send Message
+                        <div className="svg-wrapper flex items-center justify-center">
+                          <Send className="w-4 h-4 send-icon" />
+                        </div>
+                        <span className="send-text">Send Message</span>
                       </>
                     )}
                   </button>

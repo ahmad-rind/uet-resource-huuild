@@ -37,28 +37,32 @@
   --neu-scrollbar-track: #d6dae8;
   --neu-scrollbar-thumb: rgba(163, 177, 198, 0.7);
   --neu-scrollbar-thumb-hover: rgba(163, 177, 198, 0.9);
+  --neu-accent-ring: rgba(91, 79, 233, 0.3);
+  --neu-accent-glow: rgba(91, 79, 233, 0.4);
 }
 
 .dark {
   --neu-bg: #1a1d2e;
-  --neu-fg: #e2e8f0;
+  --neu-fg: #f1f5f9;
   --neu-muted: #94a3b8;
-  --neu-accent: #8B84FF;
-  --neu-accent-light: #a5a0ff;
+  --neu-accent: #7a6bff;
+  --neu-accent-light: #9b90ff;
   --neu-border: rgba(255, 255, 255, 0.08);
-  --neu-shadow-light: #232740;
-  --neu-shadow-dark: #111324;
-  --neu-shadow-extruded: 8px 8px 16px #111324, -8px -8px 16px #232740;
-  --neu-shadow-extruded-sm: 4px 4px 8px #111324, -4px -4px 8px #232740;
-  --neu-shadow-extruded-lg: 12px 12px 24px #111324, -12px -12px 24px #232740;
-  --neu-shadow-inset: inset 6px 6px 10px #111324, inset -6px -6px 10px #232740;
-  --neu-shadow-inset-sm: inset 3px 3px 6px #111324, inset -3px -3px 6px #232740;
-  --neu-shadow-inset-deep: inset 10px 10px 20px #111324, inset -10px -10px 20px #232740;
-  --neu-gradient-accent: linear-gradient(to right, #8B84FF, #c4b5fd);
-  --neu-gradient-accent-text: #a5a0ff;
+  --neu-shadow-light: #252a42;
+  --neu-shadow-dark: #0f111a;
+  --neu-shadow-extruded: 8px 8px 16px #0f111a, -8px -8px 16px #252a42;
+  --neu-shadow-extruded-sm: 4px 4px 8px #0f111a, -4px -4px 8px #252a42;
+  --neu-shadow-extruded-lg: 12px 12px 24px #0f111a, -12px -12px 24px #252a42;
+  --neu-shadow-inset: inset 6px 6px 10px #0f111a, inset -6px -6px 10px #252a42;
+  --neu-shadow-inset-sm: inset 3px 3px 6px #0f111a, inset -3px -3px 6px #252a42;
+  --neu-shadow-inset-deep: inset 10px 10px 20px #0f111a, inset -10px -10px 20px #252a42;
+  --neu-gradient-accent: linear-gradient(to right, #7a6bff, #c4b5fd);
+  --neu-gradient-accent-text: #9b90ff;
   --neu-scrollbar-track: #1a1d2e;
   --neu-scrollbar-thumb: rgba(100, 116, 139, 0.5);
   --neu-scrollbar-thumb-hover: rgba(100, 116, 139, 0.7);
+  --neu-accent-ring: rgba(122, 107, 255, 0.3);
+  --neu-accent-glow: rgba(122, 107, 255, 0.4);
 }
 
 *,

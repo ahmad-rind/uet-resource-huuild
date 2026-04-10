@@ -163,6 +163,11 @@ export default function AdminLoginPage() {
         @keyframes fadePulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
         .red-dot { background: #EF4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
         .gray-dot { background: transparent; box-shadow: var(--neu-shadow-inset-sm); }
+        
+        .admin-focus:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px var(--neu-accent-ring);
+        }
       `}</style>
 
       {/* Main Split Layout Container */}
@@ -193,7 +198,7 @@ export default function AdminLoginPage() {
                 <span className="hidden md:inline"><br/>Panel</span>
               </h1>
               
-              <div className="hidden md:block w-8 h-1 rounded-full my-4 transition-colors duration-300" style={{ background: 'var(--neu-accent)', boxShadow: '0 2px 8px rgba(91,79,233,0.4)' }} />
+              <div className="hidden md:block w-8 h-1 rounded-full my-4 transition-colors duration-300" style={{ background: 'var(--neu-accent)', boxShadow: '0 2px 8px var(--neu-accent-glow)' }} />
 
               <p className="hidden md:block text-[13px] leading-relaxed max-w-[200px] mb-8 md:mb-0 transition-colors duration-300" style={{ color: 'var(--neu-muted)' }}>
                 Manage resources, review submissions, and control platform access.
@@ -223,7 +228,7 @@ export default function AdminLoginPage() {
                   </div>
                   
                   {/* Active Indicator Dot */}
-                  <div className={`absolute right-4 w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? 'scale-100' : 'scale-0'}`} style={{ background: isActive ? 'var(--neu-accent)' : 'var(--neu-shadow-dark)', boxShadow: isActive ? '0 0 6px rgba(91,79,233,0.5)' : 'none' }} />
+                  <div className={`absolute right-4 w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? 'scale-100' : 'scale-0'}`} style={{ background: isActive ? 'var(--neu-accent)' : 'var(--neu-shadow-dark)', boxShadow: isActive ? '0 0 6px var(--neu-accent-glow)' : 'none' }} />
                 </button>
               );
             })}
@@ -235,7 +240,7 @@ export default function AdminLoginPage() {
           
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-5 h-0.5 rounded-full shadow-[0_0_4px_rgba(91,79,233,0.4)]" style={{ background: 'var(--neu-accent)' }} />
+              <div className="w-5 h-0.5 rounded-full" style={{ background: 'var(--neu-accent)', boxShadow: '0 0 4px var(--neu-accent-glow)' }} />
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase h-4 transition-colors duration-300" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'var(--neu-muted)' }}>
                 SECURE ACCESS
               </span>
@@ -269,7 +274,7 @@ export default function AdminLoginPage() {
                         placeholder="admin@uettaxila.edu.pk"
                         autoComplete="email"
                         disabled={locked || loading}
-                        className="w-full h-[54px] rounded-[16px] text-[14px] placeholder:opacity-70 pl-[44px] pr-4 outline-none disabled:opacity-50 transition-all focus:ring-2 focus:ring-[#5B4FE9]/30 admin-inset"
+                        className="w-full h-[54px] rounded-[16px] text-[14px] placeholder:opacity-70 pl-[44px] pr-4 outline-none disabled:opacity-50 transition-all admin-focus admin-inset"
                         style={{ background: 'var(--neu-bg)', color: 'var(--neu-fg)' }}
                       />
                     </div>
@@ -291,7 +296,7 @@ export default function AdminLoginPage() {
                         placeholder={locked ? `Locked — wait ${lockTimer}s` : 'Enter your password'}
                         autoComplete="current-password"
                         disabled={locked || loading}
-                        className="w-full h-[54px] rounded-[16px] text-[14px] placeholder:opacity-70 pl-[44px] pr-12 outline-none disabled:opacity-50 transition-all focus:ring-2 focus:ring-[#5B4FE9]/30 admin-inset"
+                        className="w-full h-[54px] rounded-[16px] text-[14px] placeholder:opacity-70 pl-[44px] pr-12 outline-none disabled:opacity-50 transition-all admin-focus admin-inset"
                         style={{ background: 'var(--neu-bg)', color: 'var(--neu-fg)' }}
                       />
                       <button
@@ -322,7 +327,7 @@ export default function AdminLoginPage() {
                       onChange={e => { setAccessKey(e.target.value); setError(''); }}
                       placeholder={locked ? `Locked — wait ${lockTimer}s` : 'MODE-XXXXXX'}
                       disabled={locked || loading}
-                      className="w-full h-[54px] rounded-[16px] text-[14px] font-mono tracking-wider placeholder:opacity-50 pl-[44px] pr-4 outline-none disabled:opacity-50 transition-all focus:ring-2 focus:ring-[#5B4FE9]/30 uppercase admin-inset"
+                      className="w-full h-[54px] rounded-[16px] text-[14px] font-mono tracking-wider placeholder:opacity-50 pl-[44px] pr-4 outline-none disabled:opacity-50 transition-all admin-focus uppercase admin-inset"
                       style={{ background: 'var(--neu-bg)', color: 'var(--neu-fg)' }}
                     />
                   </div>
@@ -351,7 +356,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading || locked}
-              className="w-full mt-2 flex items-center justify-center gap-2.5 text-white transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] disabled:scale-100 disabled:opacity-60 disabled:cursor-not-allowed group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]/50"
+              className="w-full mt-2 flex items-center justify-center gap-2.5 text-white transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] disabled:scale-100 disabled:opacity-60 disabled:cursor-not-allowed group focus:outline-none admin-focus"
               style={{
                 height: 56,
                 borderRadius: 16,
