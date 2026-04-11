@@ -102,7 +102,7 @@ export default function HomePage() {
           </div>
 
         {/* Stat Cards */}
-        <Reveal delay={0.3} yOffset={50}>
+        <Reveal delay={0.1} yOffset={20}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl">
             {[
               { icon: <Library className="w-[18px] h-[18px]" style={{ color: 'var(--neu-accent)' }} />, value: stats.total, label: 'Resources', glow: 'rgba(91, 79, 233, 0.15)' },
@@ -130,7 +130,7 @@ export default function HomePage() {
       </section>
 
       {/* Departments Grid */}
-      <Reveal delay={0.2}>
+      <Reveal delay={0.06}>
         <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6 md:mb-10 gap-4">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight"
@@ -168,11 +168,11 @@ export default function HomePage() {
                   <Link
                     key={dept}
                     to={`/browse?department=${encodeURIComponent(dept)}`}
-                    className="rounded-[20px] p-4 flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
+                    className="rounded-[20px] p-4 flex items-center gap-4 transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
                     style={{ background: 'var(--neu-bg)', boxShadow: 'var(--neu-shadow-extruded-sm)' }}
                   >
                     <div
-                      className="w-12 h-12 shrink-0 rounded-[14px] flex items-center justify-center transition-all duration-300 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:opacity-80 group-hover:[&>svg]:opacity-100 group-hover:[&>svg]:scale-110"
+                      className="w-12 h-12 shrink-0 rounded-[14px] flex items-center justify-center transition-all duration-150 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:opacity-80 group-hover:[&>svg]:opacity-100 group-hover:[&>svg]:scale-110"
                       style={{ background: 'var(--neu-bg)', boxShadow: 'var(--neu-shadow-inset-sm)' }}
                     >
                       {deptIcons[dept] || <BookOpen style={{ color: 'var(--neu-muted)' }} />}
@@ -186,7 +186,7 @@ export default function HomePage() {
                         {dept.replace(/\s*\(BS[C]?\)$/i, '')}
                       </h3>
                     </div>
-                    <div className="shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0">
+                    <div className="shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-150 -translate-x-2 group-hover:translate-x-0">
                       <ArrowRight className="w-4 h-4" style={{ color: 'var(--neu-accent)' }} />
                     </div>
                   </Link>
@@ -197,7 +197,7 @@ export default function HomePage() {
       </Reveal>
 
       {/* Recent Submissions */}
-      <Reveal delay={0.2}>
+      <Reveal delay={0.06}>
         <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6 md:mb-10 gap-4">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight"
@@ -241,8 +241,8 @@ export default function HomePage() {
               </p>
               <Link
                 to="/submit"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-white text-sm font-bold transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
-                style={{ background: 'var(--neu-accent)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-white text-sm font-bold transition-all duration-150 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
+                style={{ background: 'var(--neu-btn)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
               >
                 Submit First Resource
               </Link>
@@ -252,7 +252,7 @@ export default function HomePage() {
       </Reveal>
 
       {/* CTA Banner */}
-      <Reveal delay={0.2} yOffset={40}>
+      <Reveal delay={0.06} yOffset={16}>
         <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto pb-0">
           <div
             className="rounded-[24px] p-10 md:p-16 text-center"
@@ -273,8 +273,8 @@ export default function HomePage() {
             </p>
             <Link
               to="/submit"
-              className="inline-flex items-center gap-2 px-9 py-4.5 rounded-2xl text-white font-bold text-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(91,79,233,0.5)] active:translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
-              style={{ background: 'var(--neu-accent)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
+              className="inline-flex items-center gap-2 px-9 py-4.5 rounded-2xl text-white font-bold text-sm transition-all duration-150 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(91,79,233,0.5)] active:translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]"
+              style={{ background: 'var(--neu-btn)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
             >
               Submit a Resource <ArrowRight className="w-4 h-4" />
             </Link>

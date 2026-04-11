@@ -182,7 +182,7 @@ export default function BrowsePage() {
       </Helmet>
       <ScrollProgress />
       {/* Header */}
-      <Reveal delay={0.05}>
+      <Reveal delay={0.03}>
       <section className="pt-10 pb-6 px-6 md:px-8 max-w-7xl mx-auto">
         <div className="text-left w-full mb-2">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-4"
@@ -205,7 +205,7 @@ export default function BrowsePage() {
       </section>
       </Reveal>
 
-      <Reveal delay={0.1}>
+      <Reveal delay={0.05}>
       <div className="max-w-7xl mx-auto px-6 md:px-8 pb-20">
         <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
           {/* Filters Sidebar */}
@@ -236,7 +236,7 @@ export default function BrowsePage() {
                     <select
                       value={selectedDept}
                       onChange={e => handleDeptChange(e.target.value)}
-                      className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-300 cursor-pointer"
+                      className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-150 cursor-pointer"
                       style={{
                         background: 'var(--neu-bg)',
                         color: 'var(--neu-fg)',
@@ -263,7 +263,7 @@ export default function BrowsePage() {
                       value={selectedSemester}
                       onChange={e => handleSemesterChange(e.target.value)}
                       disabled={!selectedDept}
-                      className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:grayscale"
+                      className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-150 cursor-pointer disabled:opacity-40 disabled:grayscale"
                       style={{
                         background: 'var(--neu-bg)',
                         color: 'var(--neu-fg)',
@@ -290,7 +290,7 @@ export default function BrowsePage() {
                       value={selectedCourse}
                       onChange={e => handleCourseChange(e.target.value)}
                       disabled={!selectedSemester}
-                      className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:grayscale"
+                      className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-150 cursor-pointer disabled:opacity-40 disabled:grayscale"
                       style={{
                         background: 'var(--neu-bg)',
                         color: 'var(--neu-fg)',
@@ -310,7 +310,7 @@ export default function BrowsePage() {
                 {filterActive && (
                   <button
                     onClick={() => { setSelectedDept(''); setSelectedSemester(''); setSelectedCourse(''); setResources([]); setSearchParams(new URLSearchParams()); }}
-                    className="w-full py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 hover:-translate-y-0.5"
+                    className="w-full py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-150 hover:-translate-y-0.5"
                     style={{ boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif", color: 'var(--neu-muted)', background: 'var(--neu-bg)' }}
                   >
                     Clear Filters
@@ -401,8 +401,8 @@ export default function BrowsePage() {
                 </p>
                 <Link
                   to={`/submit?department=${encodeURIComponent(selectedDept)}&semester=${selectedSemester}&course=${selectedCourse}`}
-                  className="inline-flex items-center gap-3 px-10 py-4 rounded-[20px] text-white text-[15px] font-bold transition-all duration-300 hover:-translate-y-1"
-                  style={{ background: 'var(--neu-accent)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
+                  className="inline-flex items-center gap-3 px-10 py-4 rounded-[20px] text-white text-[15px] font-bold transition-all duration-150 hover:-translate-y-1"
+                  style={{ background: 'var(--neu-btn)', boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif" }}
                 >
                   <Upload className="w-5 h-5" />
                   Become a Contributor
@@ -429,7 +429,7 @@ export default function BrowsePage() {
                       placeholder="Search within results..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-300"
+                      className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-150"
                       style={{ background: 'var(--neu-bg)', color: 'var(--neu-fg)', boxShadow: 'var(--neu-shadow-inset)', fontFamily: "'DM Sans', sans-serif" }}
                     />
                   </div>

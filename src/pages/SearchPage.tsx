@@ -133,7 +133,7 @@ export default function SearchPage() {
       </Helmet>
       <ScrollProgress />
 
-      <Reveal delay={0.1}>
+      <Reveal delay={0.05}>
       <section className="pt-10 pb-6 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="text-left w-full mb-2">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-4"
@@ -176,8 +176,8 @@ export default function SearchPage() {
           </div>
           <button
             type="submit"
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl text-white font-bold text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-95 shrink-0"
-            style={{ background: 'var(--neu-accent)', fontFamily: "'DM Sans', sans-serif", boxShadow: 'var(--neu-shadow-extruded)' }}
+            className="w-full sm:w-auto px-8 py-4 rounded-2xl text-white font-bold text-[15px] transition-all duration-150 hover:scale-[1.02] active:scale-95 shrink-0"
+            style={{ background: 'var(--neu-btn)', fontFamily: "'DM Sans', sans-serif", boxShadow: 'var(--neu-shadow-extruded)' }}
           >
             Find
           </button>
@@ -185,7 +185,7 @@ export default function SearchPage() {
       </section>
       </Reveal>
 
-      <Reveal delay={0.2}>
+      <Reveal delay={0.08}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 pb-20">
         <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
           {/* Filters Sidebar */}
@@ -225,7 +225,7 @@ export default function SearchPage() {
                         value={f.value}
                         onChange={e => f.onChange(e.target.value)}
                         disabled={f.disabled}
-                        className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:grayscale"
+                        className="w-full appearance-none px-4 py-3.5 rounded-2xl text-[13px] font-medium outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-150 cursor-pointer disabled:opacity-40 disabled:grayscale"
                         style={selectStyle}
                       >
                         <option value="">All {f.label}s</option>
@@ -241,7 +241,7 @@ export default function SearchPage() {
                 {(filterType || filterDept || filterSemester || filterCourse) && (
                   <button
                     onClick={clearFilters}
-                    className="w-full py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 hover:-translate-y-0.5"
+                    className="w-full py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-150 hover:-translate-y-0.5"
                     style={{ boxShadow: 'var(--neu-shadow-extruded)', fontFamily: "'DM Sans', sans-serif", color: 'var(--neu-muted)', background: 'var(--neu-bg)' }}
                   >
                     Clear Filters
@@ -289,8 +289,8 @@ export default function SearchPage() {
                 </p>
                 <Link
                   to="/submit"
-                  className="inline-flex items-center gap-3 px-10 py-4 rounded-[20px] text-white text-[15px] font-bold transition-all duration-300 hover:-translate-y-1"
-                  style={{ background: 'var(--neu-accent)', fontFamily: "'DM Sans', sans-serif", boxShadow: 'var(--neu-shadow-extruded)' }}
+                  className="inline-flex items-center gap-3 px-10 py-4 rounded-[20px] text-white text-[15px] font-bold transition-all duration-150 hover:-translate-y-1"
+                  style={{ background: 'var(--neu-btn)', fontFamily: "'DM Sans', sans-serif", boxShadow: 'var(--neu-shadow-extruded)' }}
                 >
                   <Upload className="w-5 h-5" />
                   Submit Resource
@@ -318,7 +318,7 @@ export default function SearchPage() {
                       placeholder="Filter shown results..."
                       value={inlineQuery}
                       onChange={(e) => setInlineQuery(e.target.value)}
-                      className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-300"
+                      className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#5B4FE9]/20 transition-all duration-150"
                       style={{ background: 'var(--neu-bg)', color: 'var(--neu-fg)', boxShadow: 'var(--neu-shadow-inset)', fontFamily: "'DM Sans', sans-serif" }}
                     />
                   </div>

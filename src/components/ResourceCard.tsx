@@ -58,7 +58,7 @@ export default function ResourceCard({ resource, onPreview }: ResourceCardProps)
   return (
     <div
       onClick={() => onPreview?.(resource)}
-      className="relative rounded-[32px] overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group flex flex-row h-[120px] md:h-[130px] cursor-pointer"
+      className="relative rounded-[32px] overflow-hidden transition-all duration-150 hover:-translate-y-1.5 group flex flex-row h-[120px] md:h-[130px] cursor-pointer"
       style={{ background: 'var(--neu-bg)', boxShadow: 'var(--neu-shadow-extruded)' }}
     >
       {/* Left Sidebar */}
@@ -114,7 +114,7 @@ export default function ResourceCard({ resource, onPreview }: ResourceCardProps)
       </div>
 
       {/* Hover Arrow Overlay */}
-      <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-1 group-hover:translate-x-0">
+      <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-all duration-150 translate-x-1 group-hover:translate-x-0">
         <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--neu-accent)' }} />
       </div>
     </div>

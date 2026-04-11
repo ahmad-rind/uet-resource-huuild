@@ -14,7 +14,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
+        className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
         style={{
           background: 'var(--neu-bg)',
           color: 'var(--neu-muted)',
@@ -36,7 +36,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
+        className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
         style={{
           background: 'var(--neu-bg)',
           color: 'var(--neu-muted)',

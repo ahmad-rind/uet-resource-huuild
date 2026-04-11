@@ -77,7 +77,7 @@ export default function ContactPage() {
       </Helmet>
       <ScrollProgress />
       <div className="max-w-7xl w-full mx-auto px-4 md:px-8">
-      <Reveal delay={0.15} yOffset={40}>
+      <Reveal delay={0.06} yOffset={16}>
         <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-12 lg:gap-20 py-4 md:py-8 lg:py-0">
           
           {/* ── Left Column: Information ── */}
@@ -130,7 +130,7 @@ export default function ContactPage() {
                   <p className="mb-10 text-base" style={{ fontFamily: "'DM Sans', sans-serif", color: S.muted }}>Message received. We'll get back to you soon.</p>
                   <button 
                     onClick={() => setStatus('idle')}
-                    className="px-10 py-4 rounded-2xl text-white font-bold text-[15px] transition-all duration-300 hover:-translate-y-1 active:scale-95"
+                    className="px-10 py-4 rounded-2xl text-white font-bold text-[15px] transition-all duration-150 hover:-translate-y-1 active:scale-95"
                     style={{ background: S.accent, boxShadow: '8px 8px 20px rgba(91, 79, 233, 0.3)', fontFamily: "'DM Sans', sans-serif" }}
                   >
                     Send Another
@@ -150,7 +150,7 @@ export default function ContactPage() {
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="Your name"
-                          className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-300 focus:ring-4 focus:ring-[#5B4FE9]/10"
+                          className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-150 focus:ring-4 focus:ring-[#5B4FE9]/10"
                           style={{ background: S.bg, color: S.fg, fontFamily: "'DM Sans', sans-serif", boxShadow: S.inset }}
                         />
                       </div>
@@ -166,7 +166,7 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="hello@example.com"
-                          className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-300 focus:ring-4 focus:ring-[#5B4FE9]/10"
+                          className="w-full pl-11 pr-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-150 focus:ring-4 focus:ring-[#5B4FE9]/10"
                           style={{ background: S.bg, color: S.fg, fontFamily: "'DM Sans', sans-serif", boxShadow: S.inset }}
                         />
                       </div>
@@ -185,7 +185,7 @@ export default function ContactPage() {
                           key={item.id}
                           type="button"
                           onClick={() => setFormData(p => ({ ...p, type: item.id }))}
-                          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold transition-all duration-300 ${formData.type === item.id ? 'translate-y-0.5' : 'hover:-translate-y-0.5'}`}
+                          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold transition-all duration-150 ${formData.type === item.id ? 'translate-y-0.5' : 'hover:-translate-y-0.5'}`}
                           style={{ 
                             background: S.bg, 
                             boxShadow: formData.type === item.id ? S.inset : S.small,
@@ -208,7 +208,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
                       placeholder="Brief topic"
-                      className="w-full px-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-300 focus:ring-4 focus:ring-[#5B4FE9]/10"
+                      className="w-full px-5 py-3.5 rounded-2xl text-sm font-medium outline-none transition-all duration-150 focus:ring-4 focus:ring-[#5B4FE9]/10"
                       style={{ background: S.bg, color: S.fg, fontFamily: "'DM Sans', sans-serif", boxShadow: S.inset }}
                     />
                   </div>
@@ -222,7 +222,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="Describe in detail..."
                       rows={3}
-                      className="w-full px-5 py-3.5 rounded-2xl text-sm font-medium outline-none resize-none transition-all duration-300 focus:ring-4 focus:ring-[#5B4FE9]/10"
+                      className="w-full px-5 py-3.5 rounded-2xl text-sm font-medium outline-none resize-none transition-all duration-150 focus:ring-4 focus:ring-[#5B4FE9]/10"
                       style={{ background: S.bg, color: S.fg, fontFamily: "'DM Sans', sans-serif", boxShadow: S.inset }}
                     />
                   </div>
@@ -244,16 +244,16 @@ export default function ContactPage() {
                     .contact-send-btn span.send-text {
                       display: block;
                       margin-left: 0.3em;
-                      transition: all 0.3s ease-in-out;
+                      transition: all 0.2s ease-in-out;
                     }
                     .contact-send-btn svg.send-icon {
                       display: block;
                       transform-origin: center center;
-                      transition: transform 0.3s ease-in-out;
+                      transition: transform 0.2s ease-in-out;
                     }
                     /* Changed hover from the button selector to apply to children */
                     .contact-send-btn:hover .svg-wrapper {
-                      animation: fly-1 0.6s ease-in-out infinite alternate;
+                      animation: fly-1 0.3s ease-in-out infinite alternate;
                     }
                     .contact-send-btn:hover svg.send-icon {
                       transform: translateX(3em) rotate(45deg) scale(1.1);
@@ -275,7 +275,7 @@ export default function ContactPage() {
                     type="submit"
                     className="w-fit ml-auto px-6 py-3 flex items-center justify-center gap-2 rounded-2xl text-white text-[15px] font-bold disabled:opacity-50 contact-send-btn"
                     style={{ 
-                      background: status === 'loading' ? S.muted : S.accent,
+                      background: status === 'loading' ? S.muted : 'var(--neu-btn)',
                       boxShadow: 'var(--neu-shadow-extruded)',
                       fontFamily: "'DM Sans', sans-serif",
                     }}

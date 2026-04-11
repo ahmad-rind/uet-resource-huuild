@@ -39,6 +39,8 @@
   --neu-scrollbar-thumb-hover: rgba(163, 177, 198, 0.9);
   --neu-accent-ring: rgba(91, 79, 233, 0.3);
   --neu-accent-glow: rgba(91, 79, 233, 0.4);
+  --neu-btn: #5B4FE9;
+  --neu-btn-hover: rgba(91, 79, 233, 0.5);
 }
 
 .dark {
@@ -63,6 +65,8 @@
   --neu-scrollbar-thumb-hover: rgba(100, 116, 139, 0.7);
   --neu-accent-ring: rgba(122, 107, 255, 0.3);
   --neu-accent-glow: rgba(122, 107, 255, 0.4);
+  --neu-btn: #6C5CE7;
+  --neu-btn-hover: rgba(108, 92, 231, 0.5);
 }
 
 *,
@@ -91,12 +95,12 @@ body {
 .theme-transitioning *::before,
 .theme-transitioning *::after {
   transition:
-    background-color 0.2s ease,
-    color 0.15s ease,
-    box-shadow 0.2s ease,
-    border-color 0.15s ease,
-    fill 0.15s ease,
-    stroke 0.15s ease !important;
+    background-color 0.15s ease,
+    color 0.12s ease,
+    box-shadow 0.15s ease,
+    border-color 0.12s ease,
+    fill 0.12s ease,
+    stroke 0.12s ease !important;
 }
 
 /* Respect reduced-motion: skip all cosmetic transitions */
@@ -178,4 +182,14 @@ select option {
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Global reduced-motion: disable all transform/opacity transitions */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

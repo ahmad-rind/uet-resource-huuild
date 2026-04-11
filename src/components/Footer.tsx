@@ -21,7 +21,7 @@ export default function Footer() {
         background: 'var(--neu-bg)',
         boxShadow: 'var(--neu-shadow-extruded-lg)',
         border: '1px solid var(--neu-border)',
-        animation: 'footerSlideUp 0.6s 0.2s cubic-bezier(0.22, 0.8, 0.36, 1) both'
+        animation: 'footerSlideUp 0.35s 0.1s cubic-bezier(0.22, 0.8, 0.36, 1) both'
       }}
     >
       <style>{`
@@ -39,7 +39,7 @@ export default function Footer() {
           align-items: center;
           justify-content: center;
           color: var(--neu-muted);
-          transition: all 0.2s ease;
+          transition: all 0.15s ease;
         }
         .social-btn:hover {
           box-shadow: var(--neu-shadow-inset-sm);
@@ -70,7 +70,7 @@ export default function Footer() {
         <div className="footer-col relative lg:pl-10 lg:pr-8 flex flex-col justify-center">
           <Link to="/" className="flex items-center gap-3 mb-4 group focus:outline-none focus:ring-2 focus:ring-[#5B4FE9] rounded-xl shrink-0 w-max">
             <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:-translate-y-0.5 p-2 shrink-0"
+              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-150 group-hover:-translate-y-0.5 p-2 shrink-0"
               style={{
                 background: 'var(--neu-bg)',
                 boxShadow: 'var(--neu-shadow-extruded-sm)'
@@ -107,7 +107,7 @@ export default function Footer() {
                 className="social-btn focus:outline-none focus:ring-2 focus:ring-[#5B4FE9]/30"
                 aria-label={item.label}
               >
-                <item.icon className="w-4 h-4 transition-transform duration-300" />
+                <item.icon className="w-4 h-4 transition-transform duration-150" />
               </a>
             ))}
           </div>
@@ -128,11 +128,11 @@ export default function Footer() {
               <li key={link.to}>
                 <Link
                   to={link.to}
-                  className="group flex items-center gap-3 text-[13px] hover:opacity-100 transition-all duration-300 font-medium"
+                  className="group flex items-center gap-3 text-[13px] hover:opacity-100 transition-all duration-150 font-medium"
                   style={{ fontFamily: "'DM Sans', sans-serif", color: 'var(--neu-muted)' }}
                 >
                   <span
-                    className="w-1.5 h-1.5 rounded-full bg-[var(--neu-shadow-dark)] transition-all duration-300 group-hover:w-3 group-hover:bg-[var(--neu-accent)] group-hover:shadow-[0_0_8px_rgba(91,79,233,0.4)]"
+                    className="w-1.5 h-1.5 rounded-full bg-[var(--neu-shadow-dark)] transition-all duration-150 group-hover:w-3 group-hover:bg-[var(--neu-accent)] group-hover:shadow-[0_0_8px_rgba(91,79,233,0.4)]"
                   />
                   {link.label}
                 </Link>
@@ -148,11 +148,11 @@ export default function Footer() {
               Join the Mission
             </h4>
             <div
-              className="w-full p-[16px] rounded-[20px] flex flex-col gap-3 relative transition-all duration-300"
+              className="w-full p-[16px] rounded-[20px] flex flex-col gap-3 relative transition-all duration-150"
               style={{ background: 'var(--neu-bg)', boxShadow: 'var(--neu-shadow-inset)' }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-[10px] flex items-center justify-center shrink-0 transition-transform duration-300 hover:-translate-y-0.5"
+                <div className="w-8 h-8 rounded-[10px] flex items-center justify-center shrink-0 transition-transform duration-150 hover:-translate-y-0.5"
                   style={{ background: 'var(--neu-bg)', boxShadow: 'var(--neu-shadow-extruded-sm)' }}>
                   <MessageSquare className="w-4 h-4" style={{ color: 'var(--neu-accent)' }} />
                 </div>
@@ -163,9 +163,9 @@ export default function Footer() {
               
               <Link
                 to="/contact"
-                className="group self-end inline-flex items-center gap-2 px-4 py-2 mt-1 rounded-[10px] text-white text-[11px] font-bold transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+                className="group self-end inline-flex items-center gap-2 px-4 py-2 mt-1 rounded-[10px] text-white text-[11px] font-bold transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0"
                 style={{
-                  background: 'var(--neu-accent)',
+                  background: 'var(--neu-btn)',
                   boxShadow: '0 4px 10px rgba(91, 79, 233, 0.25)',
                   fontFamily: "'DM Sans', sans-serif"
                 }}

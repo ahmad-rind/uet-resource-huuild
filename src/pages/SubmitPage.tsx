@@ -255,7 +255,7 @@ export default function SubmitPage() {
           </div>
           <div className="flex gap-4">
             <button onClick={resetForm} className="flex-1 py-3 rounded-2xl font-bold" style={{ ...outsetStyle, color: 'var(--neu-fg)' }}>Submit Another</button>
-            <Link to="/browse" className="flex-1 py-3 rounded-2xl text-white font-bold text-center" style={{ ...outsetStyle, background: 'var(--neu-accent)' }}>Browse</Link>
+            <Link to="/browse" className="flex-1 py-3 rounded-2xl text-white font-bold text-center" style={{ ...outsetStyle, background: 'var(--neu-btn)' }}>Browse</Link>
           </div>
         </div>
       </div>
@@ -285,7 +285,7 @@ export default function SubmitPage() {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
                 className="rounded-[32px] sm:rounded-[40px] p-5 sm:p-8 relative overflow-hidden w-full" 
                 style={outsetStyle}
               >
@@ -321,7 +321,7 @@ export default function SubmitPage() {
 
                   {/* Progress Line */}
                   <div className="h-1 w-full rounded-full relative overflow-hidden" style={{ background: 'var(--neu-shadow-dark)', opacity: 0.4 }}>
-                    <div className="absolute top-0 left-0 h-full transition-all duration-700" style={{ width: `${(currentStep/5)*100}%`, background: 'var(--neu-accent)' }} />
+                    <div className="absolute top-0 left-0 h-full transition-all duration-300" style={{ width: `${(currentStep/5)*100}%`, background: 'var(--neu-accent)' }} />
                   </div>
                 </div>
                 
@@ -333,7 +333,7 @@ export default function SubmitPage() {
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -10 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                       className="space-y-4 sm:space-y-5"
                     >
                     <div className="text-center sm:text-left mb-4">
@@ -377,7 +377,7 @@ export default function SubmitPage() {
                         onClick={() => setCurrentStep(2)}
                         disabled={!form.department}
                         className="h-12 px-8 rounded-full text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.02] transition-transform"
-                        style={{ ...outsetStyle, background: 'var(--neu-accent)' }}
+                        style={{ ...outsetStyle, background: 'var(--neu-btn)' }}
                       >
                         Continue <ChevronRight className="w-4 h-4" />
                       </button>
@@ -392,7 +392,7 @@ export default function SubmitPage() {
                     initial={{ opacity: 0, x: 10 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.2 }}
                     className="space-y-3 sm:space-y-5"
                   >
                 <div className="flex items-center gap-3">
@@ -445,7 +445,7 @@ export default function SubmitPage() {
                     <div className="flex justify-end mt-8">
                       <button type="button" onClick={nextStep} disabled={!form.courseCode}
                         className="h-10 px-8 rounded-full text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.02] transition-transform"
-                        style={{ ...outsetStyle, background: 'var(--neu-accent)' }}>
+                        style={{ ...outsetStyle, background: 'var(--neu-btn)' }}>
                         Continue <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -461,7 +461,7 @@ export default function SubmitPage() {
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-3 sm:space-y-5"
               >
                 <div className="flex items-center gap-3">
@@ -485,7 +485,7 @@ export default function SubmitPage() {
                 <div className="flex justify-end mt-4">
                   <button type="button" onClick={nextStep} disabled={!form.type}
                     className="h-10 px-8 rounded-full text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.02] transition-transform"
-                    style={{ ...outsetStyle, background: 'var(--neu-accent)' }}>
+                    style={{ ...outsetStyle, background: 'var(--neu-btn)' }}>
                     Continue <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -499,7 +499,7 @@ export default function SubmitPage() {
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-3 sm:space-y-5"
               >
                 <div className="flex items-center gap-3">
@@ -527,7 +527,7 @@ export default function SubmitPage() {
                 <div className="flex justify-end mt-4">
                   <button type="button" onClick={nextStep} disabled={!form.title || !form.externalLink}
                     className="h-10 px-8 rounded-full text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.02] transition-transform"
-                    style={{ ...outsetStyle, background: 'var(--neu-accent)' }}>
+                    style={{ ...outsetStyle, background: 'var(--neu-btn)' }}>
                     Continue <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -541,7 +541,7 @@ export default function SubmitPage() {
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-3 sm:space-y-5"
               >
                 <div className="flex items-center gap-3">
@@ -583,7 +583,7 @@ export default function SubmitPage() {
                 <div className="flex justify-end mt-6">
                   <button type="submit" disabled={submitting}
                     className="h-10 px-8 rounded-full text-white font-black text-sm flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform disabled:opacity-50"
-                    style={{ ...outsetStyle, background: 'var(--neu-accent)' }}>
+                    style={{ ...outsetStyle, background: 'var(--neu-btn)' }}>
                     {submitting ? (
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (

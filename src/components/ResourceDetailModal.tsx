@@ -167,9 +167,9 @@ export default function ResourceDetailModal({ resource, onClose }: ResourceDetai
                 href={resource.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-grow h-14 flex items-center justify-center gap-2 text-white rounded-xl font-bold text-sm transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+                className="flex-grow h-14 flex items-center justify-center gap-2 text-white rounded-xl font-bold text-sm transition-all duration-150 hover:-translate-y-0.5 active:scale-95"
                 style={{
-                  background: 'var(--neu-accent)',
+                  background: 'var(--neu-btn)',
                   boxShadow: 'var(--neu-shadow-extruded)',
                 }}
               >
@@ -179,7 +179,7 @@ export default function ResourceDetailModal({ resource, onClose }: ResourceDetai
 
               <button
                 onClick={handleCopy}
-                className="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-300 active:scale-95"
+                className="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-150 active:scale-95"
                 style={{ 
                   background: 'var(--neu-bg)',
                   boxShadow: 'var(--neu-shadow-extruded-sm)',
@@ -193,7 +193,7 @@ export default function ResourceDetailModal({ resource, onClose }: ResourceDetai
               <button
                 onClick={handleReport}
                 disabled={reported}
-                className="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-300 active:scale-95 disabled:opacity-50"
+                className="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-150 active:scale-95 disabled:opacity-50"
                 style={{ 
                   background: 'var(--neu-bg)',
                   boxShadow: 'var(--neu-shadow-extruded-sm)',

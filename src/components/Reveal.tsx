@@ -8,7 +8,7 @@ interface RevealProps {
   yOffset?: number;
 }
 
-export function Reveal({ children, width = "100%", delay = 0.25, yOffset = 20 }: RevealProps) {
+export function Reveal({ children, width = "100%", delay = 0.08, yOffset = 12 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const mainControls = useAnimation();
@@ -28,7 +28,7 @@ export function Reveal({ children, width = "100%", delay = 0.25, yOffset = 20 }:
         }}
         initial="hidden"
         animate={mainControls}
-        transition={{ duration: 0.3, delay: delay, ease: "easeOut" }}
+        transition={{ duration: 0.18, delay: delay, ease: "easeOut" }}
       >
         {children}
       </motion.div>
